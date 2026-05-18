@@ -505,7 +505,7 @@ footer {
 /* Responsive */
 @media (max-width: 768px) {
     .hero {
-        background-image: url('banner-mobile.jpg');
+        background-image: url('banner-desktop-2.png');
     }
 
     .hero h1 {
