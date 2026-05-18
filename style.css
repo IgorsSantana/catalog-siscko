@@ -22,7 +22,9 @@ body {
 }
 
 /* Typography */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -80,7 +82,7 @@ a:hover {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-image: url('banner-desktop.jpg');
+    background-image: url('banner-desktop-2.png');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -89,8 +91,12 @@ a:hover {
 .hero::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(5, 5, 5, 0.5); /* overlay to keep text readable */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(5, 5, 5, 0.5);
+    /* overlay to keep text readable */
     pointer-events: none;
 }
 
@@ -221,8 +227,13 @@ a:hover {
     background: rgba(255, 255, 255, 0.2);
 }
 
-.prev-btn { left: 10px; }
-.next-btn { right: 10px; }
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
 
 /* Dots */
 .dots-container {
@@ -294,7 +305,8 @@ a:hover {
     color: #888;
 }
 
-.size-btn:hover, .size-btn.selected {
+.size-btn:hover,
+.size-btn.selected {
     border-color: var(--text-color);
     color: var(--text-color);
 }
@@ -412,7 +424,8 @@ a:hover {
 .checkout-btn {
     width: 100%;
     text-align: center;
-    background-color: #25D366; /* WhatsApp Green */
+    background-color: #25D366;
+    /* WhatsApp Green */
     color: white;
     border: none;
 }
@@ -498,13 +511,15 @@ footer {
     .hero h1 {
         font-size: 3rem;
     }
-    
+
     .nav-links li:not(:last-child) {
-        display: none; /* simple mobile fix, hides links but keeps cart */
+        display: none;
+        /* simple mobile fix, hides links but keeps cart */
     }
 
     .carousel-btn {
-        opacity: 1; /* Always show buttons on mobile for discoverability */
+        opacity: 1;
+        /* Always show buttons on mobile for discoverability */
         background: rgba(0, 0, 0, 0.3);
     }
 }
