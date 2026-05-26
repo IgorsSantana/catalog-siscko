@@ -82,7 +82,7 @@ a:hover {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-image: url('banner-desktop-2.png');
+    background-image: url('siscko-love-banner.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -132,6 +132,50 @@ a:hover {
 .btn:hover {
     background-color: transparent;
     color: var(--text-color);
+}
+
+/* Highlight Section */
+.highlight-section {
+    padding: 6rem 5% 0;
+}
+
+.highlight-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.highlight-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.highlight-desc {
+    color: #888;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .highlight-card {
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    .highlight-card .carousel {
+        flex: 1;
+        max-width: 50%;
+    }
+    
+    .highlight-card .product-info {
+        flex: 1;
+        padding: 3rem;
+        justify-content: center;
+    }
+    
+    .highlight-desc {
+        font-size: 1rem;
+    }
 }
 
 /* Collection Section */
@@ -327,6 +371,18 @@ a:hover {
 .add-cart-btn:hover {
     background: var(--text-color);
     color: var(--bg-color);
+}
+
+.size-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.add-cart-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 /* Cart Sidebar */
