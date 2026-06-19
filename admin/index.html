@@ -4,6 +4,41 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Siscko | Painel Administrativo</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Tema Personalizado Siscko para o Painel */
+    * {
+      font-family: 'Inter', sans-serif !important;
+    }
+    
+    /* Botões principais e Login */
+    button, .nc-githubAuthenticationPage-button, [class*="Button"] {
+      border-radius: 4px !important;
+    }
+
+    /* Topbar - Header do Painel (Força fundo escuro para contrastar com a logo branca) */
+    [class*="AppHeader"] {
+        background-color: #0a0a0a !important;
+    }
+    
+    [class*="AppHeader"] a {
+        color: #fff !important;
+    }
+
+    /* Sidebar do Painel */
+    [class*="SidebarContainer"] {
+        background-color: #f9f9f9 !important;
+        border-right: 1px solid #eee !important;
+    }
+
+    /* Botão de Salvar/Publish */
+    [class*="ToolbarContainer"] button:last-child {
+        background-color: #000 !important;
+        color: #fff !important;
+    }
+  </style>
+
   <!-- Inclui o widget do Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>

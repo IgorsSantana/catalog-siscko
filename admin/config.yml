@@ -18,42 +18,47 @@ editor:
 
 collections:
   - name: "catalog"
-    label: "Catálogo"
+    label: "Catálogo de Roupas"
     files:
-      - label: "Lista de Produtos"
+      - label: "Gerenciar Produtos"
         name: "products"
         file: "data/products.json"
-        description: "Adicione, remova e edite os produtos do catálogo aqui."
+        description: "Adicione, remova e edite as peças do catálogo. Não esqueça de clicar em PUBLISH ao finalizar."
         fields:
-          - label: "Produtos"
+          - label: "Lista de Produtos"
             name: "products"
             widget: "list"
-            summary: '{{fields.name}} - {{fields.status}}'
+            summary: '{{fields.name}} | {{fields.status}} | R$ {{fields.price}}'
             fields:
-              - label: "Nome do Produto"
+              - label: "Nome da Peça"
                 name: "name"
                 widget: "string"
-              - label: "Preço"
+                hint: "Ex: Moletom Chumbo, Basic Tee..."
+              - label: "Preço (R$)"
                 name: "price"
                 widget: "number"
                 value_type: "float"
                 default: 0
                 required: false
-              - label: "Status"
+                hint: "Use ponto para centavos. Ex: 99.90. Deixe 0 se for lançamento futuro."
+              - label: "Disponibilidade"
                 name: "status"
                 widget: "select"
                 options: ["Disponível", "Em Breve"]
                 default: "Disponível"
-              - label: "Sessão (Categoria no Site)"
+                hint: "Peças em breve ficarão com botão desativado e preço oculto."
+              - label: "Sessão do Site"
                 name: "category"
                 widget: "select"
                 options: ["CLUB-01", "EM BREVE"]
                 default: "CLUB-01"
-              - label: "Imagens do Produto"
+                hint: "Em qual seção da página inicial esta peça deve aparecer?"
+              - label: "Galeria de Fotos"
                 name: "images"
                 widget: "list"
-                summary: 'Imagem'
+                summary: 'Foto {{index}}'
+                hint: "A 1ª foto é a padrão. A 2ª foto é a que aparece quando o cliente passa o mouse por cima (Hover/Costas)."
                 field: 
-                  label: "Imagem"
+                  label: "Upload da Imagem"
                   name: "image"
                   widget: "image"
