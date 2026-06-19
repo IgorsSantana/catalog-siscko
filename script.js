@@ -232,25 +232,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Checkout to WhatsApp
-    checkoutBtn.addEventListener('click', () => {
+    // Checkout to InfinitePay
+    checkoutBtn.addEventListener('click', async () => {
         if (cart.length === 0) {
             alert("Seu carrinho está vazio!");
             return;
         }
 
-        let message = "Olá! Gostaria de finalizar o meu pedido:%0A%0A";
-        let totalPrice = 0;
+        const originalText = checkoutBtn.innerText;
+        checkoutBtn.innerText = "Processando...";
+        checkoutBtn.disabled = true;
 
-        cart.forEach(item => {
-            message += `${item.quantity}x ${item.name} (Tamanho: ${item.size}) - R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}%0A`;
-            totalPrice += item.price * item.quantity;
-        });
+        try {
+            const items = cart.map(item => ({
+                quantity: item.quantity,
+                price: Math.round(item.price * 100), // Converte para centavos
+                description: `${item.name} (Tamanho: ${item.size})`
+            }));
 
-        message += `%0A*Total: R$ ${totalPrice.toFixed(2).replace('.', ',')}*`;
+            const payload = {
+                handle: "siscko",
+                items: items
+            };
 
-        const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
-        window.open(waUrl, '_blank');
+            const response = await fetch('https://api.checkout.infinitepay.io/links', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro na requisição: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                throw new Error('URL de checkout não encontrada na resposta.');
+            }
+        } catch (error) {
+            console.error('Erro ao gerar link de pagamento:', error);
+            alert('Houve um erro ao tentar processar o seu pedido. Por favor, tente novamente.');
+        } finally {
+            checkoutBtn.innerText = originalText;
+            checkoutBtn.disabled = false;
+        }
     });
 
     // --- Image Modal Logic ---
