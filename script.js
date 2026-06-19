@@ -255,7 +255,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 items: items
             };
 
-            const response = await fetch('https://api.checkout.infinitepay.io/links', {
+            const proxyUrl = 'https://corsproxy.io/?';
+            const targetUrl = 'https://api.checkout.infinitepay.io/links';
+            
+            const response = await fetch(proxyUrl + encodeURIComponent(targetUrl), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
