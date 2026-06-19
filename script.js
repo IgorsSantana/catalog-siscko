@@ -255,8 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 items: items
             };
 
-            // Chama o nosso próprio proxy em PHP (para evitar problemas de CORS)
-            const response = await fetch('checkout.php', {
+            // Chama o nosso proxy Netlify Function
+            const response = await fetch('/.netlify/functions/checkout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
