@@ -66,6 +66,14 @@
       ]
     },
     {
+      "price": 119.9,
+      "status": "Em Breve",
+      "category": "EM BREVE",
+      "name": "MOOSE TEE",
+      "main_image": "uploads/moose-back.png",
+      "hover_image": "uploads/moose-front.png"
+    },
+    {
       "name": "Peoples Tee",
       "price": 119.9,
       "status": "Em Breve",
