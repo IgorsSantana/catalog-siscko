@@ -41,7 +41,7 @@
             <button class="hero-nav prev-hero">&lt;</button>
             <button class="hero-nav next-hero">&gt;</button>
         </div>
-        
+
         <!-- Mobile Static Banner -->
         <div class="hero-bg mobile-only">
             <img src="banner-mobile.jpg" alt="Banner Mobile">
@@ -90,11 +90,36 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>P</td><td>57 cm</td><td>72 cm</td><td>25 cm</td></tr>
-                        <tr><td>M</td><td>59 cm</td><td>74 cm</td><td>26 cm</td></tr>
-                        <tr><td>G</td><td>62 cm</td><td>78 cm</td><td>28 cm</td></tr>
-                        <tr><td>GG</td><td>63 cm</td><td>82 cm</td><td>29 cm</td></tr>
-                        <tr><td>XG</td><td>65 cm</td><td>86 cm</td><td>29 cm</td></tr>
+                        <tr>
+                            <td>P</td>
+                            <td>57 cm</td>
+                            <td>72 cm</td>
+                            <td>25 cm</td>
+                        </tr>
+                        <tr>
+                            <td>M</td>
+                            <td>59 cm</td>
+                            <td>74 cm</td>
+                            <td>26 cm</td>
+                        </tr>
+                        <tr>
+                            <td>G</td>
+                            <td>62 cm</td>
+                            <td>78 cm</td>
+                            <td>28 cm</td>
+                        </tr>
+                        <tr>
+                            <td>GG</td>
+                            <td>63 cm</td>
+                            <td>82 cm</td>
+                            <td>29 cm</td>
+                        </tr>
+                        <tr>
+                            <td>XG</td>
+                            <td>65 cm</td>
+                            <td>86 cm</td>
+                            <td>29 cm</td>
+                        </tr>
                     </tbody>
                 </table>
                 <p class="table-disclaimer">* A grade de tamanhos pode sofrer pequenas variações de até 2cm.</p>
@@ -133,7 +158,7 @@
                 <span>TOTAL:</span>
                 <span id="cart-total-price">R$ 0,00</span>
             </div>
-            <button id="checkout-btn" class="btn checkout-btn">CHECKOUT (WHATSAPP)</button>
+            <button id="checkout-btn" class="btn checkout-btn">CHECKOUT</button>
         </div>
     </div>
     <div id="cart-overlay" class="cart-overlay"></div>
@@ -150,15 +175,15 @@
 
     <script src="script.js"></script>
     <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
             });
-          }
-        });
-      }
+        }
     </script>
 </body>
 
