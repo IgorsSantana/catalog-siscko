@@ -1,4 +1,89 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // --- Fetch and Render Products ---
+    fetch('data/products.json')
+        .then(res => {
+            if (!res.ok) throw new Error("Não foi possível carregar os produtos");
+            return res.json();
+        })
+        .then(data => {
+            if (data && data.products) {
+                renderProducts(data.products);
+            }
+        })
+        .catch(err => {
+            console.error("Erro carregando produtos:", err);
+        });
+
+    function renderProducts(products) {
+        const club01Grid = document.getElementById('club-01-grid');
+        const emBreveGrid = document.getElementById('em-breve-grid');
+        const allProductsGrid = document.getElementById('all-products-grid');
+
+        products.forEach(product => {
+            const isEmBreve = product.status === "Em Breve";
+            const priceDisplay = isEmBreve ? "EM BREVE" : `R$ ${product.price.toFixed(2).replace('.', ',')}`;
+            const disabledClass = isEmBreve ? "disabled" : "";
+            const disabledAttr = isEmBreve ? "disabled" : "";
+
+            let imagesHTML = "";
+            let dotsHTML = "";
+            
+            if (product.images && product.images.length > 0) {
+                product.images.forEach((img, i) => {
+                    const activeClass = i === 0 ? "active" : "";
+                    imagesHTML += `<img src="${img}" alt="${product.name} ${i+1}" class="carousel-img ${activeClass}">`;
+                    dotsHTML += `<span class="dot ${activeClass}"></span>`;
+                });
+            } else {
+                imagesHTML = `<div class="placeholder-img">Sem imagem</div>`;
+            }
+
+            const cardHTML = `
+                <div class="product-card" data-name="${product.name}" data-price="${product.price}">
+                    <div class="carousel">
+                        <button class="carousel-btn prev-btn">&lt;</button>
+                        <div class="carousel-track">
+                            ${imagesHTML}
+                        </div>
+                        <button class="carousel-btn next-btn">&gt;</button>
+                        <div class="dots-container">
+                            ${dotsHTML}
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="info-header">
+                            <h3>${product.name}</h3>
+                            <p class="price">${priceDisplay}</p>
+                        </div>
+                        <div class="sizes">
+                            <span class="size-btn ${disabledClass}">P</span>
+                            <span class="size-btn ${disabledClass}">M</span>
+                            <span class="size-btn ${disabledClass}">G</span>
+                            <span class="size-btn ${disabledClass}">GG</span>
+                            <span class="size-btn ${disabledClass}">XG</span>
+                        </div>
+                        <button class="add-cart-btn ${disabledClass}" ${disabledAttr}>${isEmBreve ? "EM BREVE" : "ADD TO CART"}</button>
+                    </div>
+                </div>
+            `;
+
+            if (allProductsGrid) {
+                allProductsGrid.insertAdjacentHTML('beforeend', cardHTML);
+            } else {
+                if (product.category === "CLUB-01" && club01Grid) {
+                    club01Grid.insertAdjacentHTML('beforeend', cardHTML);
+                } else if (product.category === "EM BREVE" && emBreveGrid) {
+                    emBreveGrid.insertAdjacentHTML('beforeend', cardHTML);
+                }
+            }
+        });
+
+        // Após renderizar os produtos dinamicamente, iniciamos os eventos
+        initProductEventListeners();
+    }
+
+
     // --- Hero Carousel Logic ---
     const heroTrack = document.querySelector('.hero-carousel-track');
     if (heroTrack) {
@@ -34,82 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Carousel Logic ---
-    const carousels = document.querySelectorAll('.carousel');
-
-    carousels.forEach(carousel => {
-        const track = carousel.querySelector('.carousel-track');
-        const images = Array.from(track.children);
-        
-        if (images.length <= 1) return;
-
-        const nextButton = carousel.querySelector('.next-btn');
-        const prevButton = carousel.querySelector('.prev-btn');
-        const dotsNav = carousel.querySelector('.dots-container');
-        const dots = Array.from(dotsNav.children);
-
-        let currentIndex = 0;
-
-        const updateCarousel = (index) => {
-            track.style.transform = `translateX(-${index * 100}%)`;
-            
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[index].classList.add('active');
-
-            images.forEach(img => img.classList.remove('active'));
-            images[index].classList.add('active');
-            
-            currentIndex = index;
-        };
-
-        nextButton.addEventListener('click', () => {
-            let nextIndex = currentIndex + 1;
-            if (nextIndex >= images.length) {
-                nextIndex = 0;
-            }
-            updateCarousel(nextIndex);
-        });
-
-        prevButton.addEventListener('click', () => {
-            let prevIndex = currentIndex - 1;
-            if (prevIndex < 0) {
-                prevIndex = images.length - 1;
-            }
-            updateCarousel(prevIndex);
-        });
-
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                updateCarousel(index);
-            });
-        });
-
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        carousel.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, {passive: true});
-
-        carousel.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, {passive: true});
-
-        function handleSwipe() {
-            const threshold = 50; 
-            if (touchStartX - touchEndX > threshold) {
-                let nextIndex = currentIndex + 1;
-                if (nextIndex < images.length) updateCarousel(nextIndex);
-            }
-            if (touchEndX - touchStartX > threshold) {
-                let prevIndex = currentIndex - 1;
-                if (prevIndex >= 0) updateCarousel(prevIndex);
-            }
-        }
-    });
-
-    // Smooth scrolling for anchor links
+    // --- Smooth scrolling for anchor links ---
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -122,10 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Cart Logic ---
+    // --- Cart & Modal Variables ---
     let cart = [];
-    const WHATSAPP_NUMBER = "5532999782790";
-
     const cartIcon = document.getElementById('cart-icon');
     const cartSidebar = document.getElementById('cart-sidebar');
     const closeCartBtn = document.getElementById('close-cart');
@@ -134,47 +142,125 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartCountEl = document.getElementById('cart-count');
     const cartTotalPriceEl = document.getElementById('cart-total-price');
     const checkoutBtn = document.getElementById('checkout-btn');
+    
+    // --- Image Modal Variables ---
+    const imageModal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    const closeModalBtn = document.getElementById('close-modal');
+    const modalPrevBtn = document.getElementById('modal-prev');
+    const modalNextBtn = document.getElementById('modal-next');
+    let currentModalImages = [];
+    let currentModalIndex = 0;
 
-    // Toggle Size Selection
-    document.querySelectorAll('.product-card').forEach(card => {
-        const sizeBtns = card.querySelectorAll('.size-btn');
-        sizeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                sizeBtns.forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-            });
-        });
-
-        // Add to Cart Action
-        const addBtn = card.querySelector('.add-cart-btn');
-        addBtn.addEventListener('click', () => {
-            const selectedSizeBtn = card.querySelector('.size-btn.selected');
-            if (!selectedSizeBtn) {
-                alert("Por favor, selecione um tamanho antes de adicionar ao carrinho.");
+    // --- Init Function for Dynamic Elements ---
+    function initProductEventListeners() {
+        
+        // Carousel Logic
+        const carousels = document.querySelectorAll('.carousel');
+        carousels.forEach(carousel => {
+            const track = carousel.querySelector('.carousel-track');
+            const images = Array.from(track.children);
+            if (images.length <= 1) {
+                // Hide arrows and dots if only 1 image
+                const nextBtn = carousel.querySelector('.next-btn');
+                const prevBtn = carousel.querySelector('.prev-btn');
+                const dotsNav = carousel.querySelector('.dots-container');
+                if(nextBtn) nextBtn.style.display = 'none';
+                if(prevBtn) prevBtn.style.display = 'none';
+                if(dotsNav) dotsNav.style.display = 'none';
                 return;
             }
 
-            const size = selectedSizeBtn.innerText;
-            const name = card.dataset.name;
-            const price = parseFloat(card.dataset.price);
+            const nextButton = carousel.querySelector('.next-btn');
+            const prevButton = carousel.querySelector('.prev-btn');
+            const dotsNav = carousel.querySelector('.dots-container');
+            const dots = Array.from(dotsNav.children);
 
-            // Check if item+size already in cart
-            const existingItem = cart.find(item => item.name === name && item.size === size);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ name, size, price, quantity: 1 });
-            }
+            let currentIndex = 0;
+            const updateCarousel = (index) => {
+                track.style.transform = `translateX(-${index * 100}%)`;
+                dots.forEach(dot => dot.classList.remove('active'));
+                if(dots[index]) dots[index].classList.add('active');
+                images.forEach(img => img.classList.remove('active'));
+                if(images[index]) images[index].classList.add('active');
+                currentIndex = index;
+            };
 
-            updateCartUI();
-            openCart();
-            
-            // Optional: Remove selected state after adding
-            selectedSizeBtn.classList.remove('selected');
+            nextButton.addEventListener('click', () => {
+                let nextIndex = currentIndex + 1;
+                if (nextIndex >= images.length) nextIndex = 0;
+                updateCarousel(nextIndex);
+            });
+
+            prevButton.addEventListener('click', () => {
+                let prevIndex = currentIndex - 1;
+                if (prevIndex < 0) prevIndex = images.length - 1;
+                updateCarousel(prevIndex);
+            });
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => updateCarousel(index));
+            });
+
+            let touchStartX = 0;
+            let touchEndX = 0;
+            carousel.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+            carousel.addEventListener('touchend', e => { 
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) { let next = currentIndex + 1; if (next < images.length) updateCarousel(next); }
+                if (touchEndX - touchStartX > 50) { let prev = currentIndex - 1; if (prev >= 0) updateCarousel(prev); }
+            }, {passive: true});
         });
-    });
 
-    // Sidebar toggles
+        // Toggle Size Selection & Add to Cart
+        document.querySelectorAll('.product-card').forEach(card => {
+            const sizeBtns = card.querySelectorAll('.size-btn:not(.disabled)');
+            sizeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    sizeBtns.forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                });
+            });
+
+            const addBtn = card.querySelector('.add-cart-btn:not(.disabled)');
+            if (addBtn) {
+                addBtn.addEventListener('click', () => {
+                    const selectedSizeBtn = card.querySelector('.size-btn.selected');
+                    if (!selectedSizeBtn) {
+                        alert("Por favor, selecione um tamanho antes de adicionar ao carrinho.");
+                        return;
+                    }
+                    const size = selectedSizeBtn.innerText;
+                    const name = card.dataset.name;
+                    const price = parseFloat(card.dataset.price);
+
+                    const existingItem = cart.find(item => item.name === name && item.size === size);
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        cart.push({ name, size, price, quantity: 1 });
+                    }
+
+                    updateCartUI();
+                    openCart();
+                    selectedSizeBtn.classList.remove('selected');
+                });
+            }
+        });
+
+        // Image Modal Click on Carousel Images
+        document.querySelectorAll('.carousel-img').forEach(img => {
+            img.addEventListener('click', (e) => {
+                const track = e.target.closest('.carousel-track');
+                const imgs = Array.from(track.children);
+                const index = imgs.indexOf(e.target);
+                openImageModal(imgs, index);
+            });
+        });
+    }
+
+    // --- Sidebar & General UI Logic ---
+
     const openCart = () => {
         cartSidebar.classList.add('open');
         cartOverlay.classList.add('open');
@@ -193,7 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
     closeCartBtn.addEventListener('click', closeCart);
     cartOverlay.addEventListener('click', closeCart);
 
-    // Update Cart UI
     const updateCartUI = () => {
         cartItemsContainer.innerHTML = '';
         let totalCount = 0;
@@ -222,7 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cartCountEl.innerText = totalCount;
         cartTotalPriceEl.innerText = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
 
-        // Add listeners to new remove buttons
         document.querySelectorAll('.remove-item').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const idx = e.target.dataset.index;
@@ -255,21 +339,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 items: items
             };
 
-            // Chama o nosso proxy Netlify Function
             const response = await fetch('/.netlify/functions/checkout', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            if (!response.ok) {
-                throw new Error(`Erro na requisição: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
 
             const data = await response.json();
-            
             if (data.url) {
                 window.location.href = data.url;
             } else {
@@ -284,16 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Image Modal Logic ---
-    const imageModal = document.getElementById('image-modal');
-    const modalImg = document.getElementById('modal-img');
-    const closeModalBtn = document.getElementById('close-modal');
-    const modalPrevBtn = document.getElementById('modal-prev');
-    const modalNextBtn = document.getElementById('modal-next');
-
-    let currentModalImages = [];
-    let currentModalIndex = 0;
-
+    // Modal Global Logic
     const openImageModal = (imagesArray, startIndex) => {
         currentModalImages = imagesArray;
         currentModalIndex = startIndex;
@@ -339,17 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Add click listeners to all carousel images
-    document.querySelectorAll('.carousel-img').forEach(img => {
-        img.addEventListener('click', (e) => {
-            const track = e.target.closest('.carousel-track');
-            const imgs = Array.from(track.children);
-            const index = imgs.indexOf(e.target);
-            openImageModal(imgs, index);
-        });
-    });
-
-    // --- Mobile Menu Logic ---
+    // Mobile Menu Logic
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
     if (hamburger && navLinks) {

@@ -1,0 +1,53 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Os uploads feitos pelo painel vão para a pasta /uploads
+media_folder: "uploads"
+public_folder: "uploads"
+
+# Ocultar o preview lado-a-lado já que nosso site usa layout customizado
+editor:
+  preview: false
+
+collections:
+  - name: "catalog"
+    label: "Catálogo"
+    files:
+      - label: "Lista de Produtos"
+        name: "products"
+        file: "data/products.json"
+        description: "Adicione, remova e edite os produtos do catálogo aqui."
+        fields:
+          - label: "Produtos"
+            name: "products"
+            widget: "list"
+            summary: '{{fields.name}} - {{fields.status}}'
+            fields:
+              - label: "Nome do Produto"
+                name: "name"
+                widget: "string"
+              - label: "Preço"
+                name: "price"
+                widget: "number"
+                value_type: "float"
+                default: 0
+                required: false
+              - label: "Status"
+                name: "status"
+                widget: "select"
+                options: ["Disponível", "Em Breve"]
+                default: "Disponível"
+              - label: "Sessão (Categoria no Site)"
+                name: "category"
+                widget: "select"
+                options: ["CLUB-01", "EM BREVE"]
+                default: "CLUB-01"
+              - label: "Imagens do Produto"
+                name: "images"
+                widget: "list"
+                summary: 'Imagem'
+                field: 
+                  label: "Imagem"
+                  name: "image"
+                  widget: "image"

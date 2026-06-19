@@ -1,0 +1,95 @@
+{
+  "products": [
+    {
+      "name": "Buffling Tee",
+      "price": 99.9,
+      "status": "Disponível",
+      "category": "CLUB-01",
+      "images": [
+        "drops/CLUB-01/mockup buffling back.png",
+        "drops/CLUB-01/mockup buffling front.png",
+        "drops/CLUB-01/buffling 1.jpg",
+        "drops/CLUB-01/buffling 2.jpg",
+        "drops/CLUB-01/buffling 3.jpg"
+      ]
+    },
+    {
+      "name": "Creative Department Tee",
+      "price": 99.9,
+      "status": "Disponível",
+      "category": "CLUB-01",
+      "images": [
+        "drops/CLUB-01/mockup criative department back.png",
+        "drops/CLUB-01/mockup criative department front.png",
+        "drops/CLUB-01/creative department 1.jpg",
+        "drops/CLUB-01/creative department 2.jpg",
+        "drops/CLUB-01/creative department 3.jpg",
+        "drops/CLUB-01/creative department 4.jpg"
+      ]
+    },
+    {
+      "name": "Moletom Chumbo",
+      "price": 0,
+      "status": "Em Breve",
+      "category": "EM BREVE",
+      "images": [
+        "drops/EM BREVE/moletom chumbo front img.png",
+        "drops/EM BREVE/moletom chumbo back img.png"
+      ]
+    },
+    {
+      "name": "Basic Tee",
+      "price": 89.9,
+      "status": "Em Breve",
+      "category": "EM BREVE",
+      "images": [
+        "drops/EM BREVE/siscko-basic.png",
+        "drops/EM BREVE/siscko-basic-site.jpg"
+      ]
+    },
+    {
+      "name": "Cat Tee",
+      "price": 119.9,
+      "status": "Em Breve",
+      "category": "EM BREVE",
+      "images": [
+        "drops/EM BREVE/siscko-cat-back.png",
+        "drops/EM BREVE/siscko-cat-front.png",
+        "drops/EM BREVE/siscko-cat-back-site.jpg"
+      ]
+    },
+    {
+      "name": "Love Tee",
+      "price": 119.9,
+      "status": "Em Breve",
+      "category": "EM BREVE",
+      "images": [
+        "drops/EM BREVE/siscko-love-back.png",
+        "drops/EM BREVE/siscko-love-front.png",
+        "drops/EM BREVE/siscko-love-back-site.jpg"
+      ]
+    },
+    {
+      "name": "Peoples Tee",
+      "price": 119.9,
+      "status": "Em Breve",
+      "category": "EM BREVE",
+      "images": [
+        "drops/EM BREVE/siscko-peoples-back.png",
+        "drops/EM BREVE/siscko-peoples-front.png",
+        "drops/EM BREVE/siscko-peoples-back-site.jpg"
+      ]
+    },
+    {
+      "name": "World Cup Tee",
+      "price": 159.9,
+      "status": "Em Breve",
+      "category": "EM BREVE",
+      "images": [
+        "drops/EM BREVE/siscko-world-cup-front.png",
+        "drops/EM BREVE/siscko-world-cup-back.png",
+        "drops/EM BREVE/siscko-world-cup-back-site.jpg"
+      ]
+    }
+  ]
+}

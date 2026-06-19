@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 
 <body>
@@ -58,82 +59,8 @@
             <h2>CLUB-01</h2>
             <p>Disponível agora.</p>
         </div>
-        <div class="grid-container">
-
-            <!-- Product: Buffling -->
-            <div class="product-card" data-name="Buffling Tee" data-price="99.9">
-                <div class="carousel" data-images="drops/CLUB-01/mockup buffling back.png,drops/CLUB-01/mockup buffling front.png,drops/CLUB-01/buffling 1.jpg,drops/CLUB-01/buffling 2.jpg,drops/CLUB-01/buffling 3.jpg">
-                    <button class="carousel-btn prev-btn">&lt;</button>
-                    <div class="carousel-track">
-                        <img src="drops/CLUB-01/mockup buffling back.png" alt="Buffling Back" class="carousel-img active">
-                        <img src="drops/CLUB-01/mockup buffling front.png" alt="Buffling Front" class="carousel-img">
-                        <img src="drops/CLUB-01/buffling 1.jpg" alt="Buffling Detail 1" class="carousel-img">
-                        <img src="drops/CLUB-01/buffling 2.jpg" alt="Buffling Detail 2" class="carousel-img">
-                        <img src="drops/CLUB-01/buffling 3.jpg" alt="Buffling Detail 3" class="carousel-img">
-                    </div>
-                    <button class="carousel-btn next-btn">&gt;</button>
-                    <div class="dots-container">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="info-header">
-                        <h3>Buffling Tee</h3>
-                        <p class="price">R$ 99,90</p>
-                    </div>
-                    <div class="sizes">
-                        <span class="size-btn">P</span>
-                        <span class="size-btn">M</span>
-                        <span class="size-btn">G</span>
-                        <span class="size-btn">GG</span>
-                        <span class="size-btn">XG</span>
-                    </div>
-                    <button class="add-cart-btn">ADD TO CART</button>
-                </div>
-            </div>
-
-            <!-- Product: Creative Department -->
-            <div class="product-card" data-name="Creative Department Tee" data-price="99.9">
-                <div class="carousel" data-images="drops/CLUB-01/mockup criative department back.png,drops/CLUB-01/mockup criative department front.png,drops/CLUB-01/creative department 1.jpg,drops/CLUB-01/creative department 2.jpg,drops/CLUB-01/creative department 3.jpg,drops/CLUB-01/creative department 4.jpg">
-                    <button class="carousel-btn prev-btn">&lt;</button>
-                    <div class="carousel-track">
-                        <img src="drops/CLUB-01/mockup criative department back.png" alt="Creative Department Back" class="carousel-img active">
-                        <img src="drops/CLUB-01/mockup criative department front.png" alt="Creative Department Front" class="carousel-img">
-                        <img src="drops/CLUB-01/creative department 1.jpg" alt="Creative Department Detail 1" class="carousel-img">
-                        <img src="drops/CLUB-01/creative department 2.jpg" alt="Creative Department Detail 2" class="carousel-img">
-                        <img src="drops/CLUB-01/creative department 3.jpg" alt="Creative Department Detail 3" class="carousel-img">
-                        <img src="drops/CLUB-01/creative department 4.jpg" alt="Creative Department Detail 4" class="carousel-img">
-                    </div>
-                    <button class="carousel-btn next-btn">&gt;</button>
-                    <div class="dots-container">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="info-header">
-                        <h3>Creative Department Tee</h3>
-                        <p class="price">R$ 99,90</p>
-                    </div>
-                    <div class="sizes">
-                        <span class="size-btn">P</span>
-                        <span class="size-btn">M</span>
-                        <span class="size-btn">G</span>
-                        <span class="size-btn">GG</span>
-                        <span class="size-btn">XG</span>
-                    </div>
-                    <button class="add-cart-btn">ADD TO CART</button>
-                </div>
-            </div>
-
+        <div class="grid-container" id="club-01-grid">
+            <!-- Produtos renderizados dinamicamente pelo script.js -->
         </div>
     </section>
 
@@ -142,199 +69,8 @@
             <h2>EM BREVE</h2>
             <p>Os próximos lançamentos da Siscko.</p>
         </div>
-        <div class="grid-container">
-
-            <div class="product-card" data-name="Moletom Chumbo" data-price="0">
-                <div class="carousel"
-                    data-images="drops/EM BREVE/moletom chumbo front img.png,drops/EM BREVE/moletom chumbo back img.png">
-                    <button class="carousel-btn prev-btn">&lt;</button>
-                    <div class="carousel-track">
-                        <img src="drops/EM BREVE/moletom chumbo front img.png" alt="Moletom Chumbo Front" class="carousel-img active">
-                        <img src="drops/EM BREVE/moletom chumbo back img.png" alt="Moletom Chumbo Back" class="carousel-img">
-                    </div>
-                    <button class="carousel-btn next-btn">&gt;</button>
-                    <div class="dots-container">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="info-header">
-                        <h3>Moletom Chumbo</h3>
-                        <p class="price">EM BREVE</p>
-                    </div>
-                    <div class="sizes">
-                        <span class="size-btn disabled">P</span>
-                        <span class="size-btn disabled">M</span>
-                        <span class="size-btn disabled">G</span>
-                        <span class="size-btn disabled">GG</span>
-                        <span class="size-btn disabled">XG</span>
-                    </div>
-                    <button class="add-cart-btn disabled" disabled>EM BREVE</button>
-                </div>
-            </div>
-
-            <!-- Product: Basic -->
-            <div class="product-card" data-name="Basic Tee" data-price="89.9">
-                <div class="carousel" data-images="drops/EM BREVE/siscko-basic.png,drops/EM BREVE/siscko-basic-site.jpg">
-                    <button class="carousel-btn prev-btn">&lt;</button>
-                    <div class="carousel-track">
-                        <img src="drops/EM BREVE/siscko-basic.png" alt="Siscko Basic" class="carousel-img active">
-                        <img src="drops/EM BREVE/siscko-basic-site.jpg" alt="Siscko Basic Site" class="carousel-img">
-                    </div>
-                    <button class="carousel-btn next-btn">&gt;</button>
-                    <div class="dots-container">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="info-header">
-                        <h3>Basic Tee</h3>
-                        <p class="price">EM BREVE</p>
-                    </div>
-                    <div class="sizes">
-                        <span class="size-btn disabled">P</span>
-                        <span class="size-btn disabled">M</span>
-                        <span class="size-btn disabled">G</span>
-                        <span class="size-btn disabled">GG</span>
-                        <span class="size-btn disabled">XG</span>
-                    </div>
-                    <button class="add-cart-btn disabled" disabled>EM BREVE</button>
-                </div>
-            </div>
-
-            <!-- Product: Cat -->
-            <div class="product-card" data-name="Cat Tee" data-price="119.9">
-                <div class="carousel" data-images="drops/EM BREVE/siscko-cat-back.png,drops/EM BREVE/siscko-cat-front.png,drops/EM BREVE/siscko-cat-back-site.jpg">
-                    <button class="carousel-btn prev-btn">&lt;</button>
-                    <div class="carousel-track">
-                        <img src="drops/EM BREVE/siscko-cat-back.png" alt="Siscko Cat Back" class="carousel-img active">
-                        <img src="drops/EM BREVE/siscko-cat-front.png" alt="Siscko Cat Front" class="carousel-img">
-                        <img src="drops/EM BREVE/siscko-cat-back-site.jpg" alt="Siscko Cat Back Site" class="carousel-img">
-                    </div>
-                    <button class="carousel-btn next-btn">&gt;</button>
-                    <div class="dots-container">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="info-header">
-                        <h3>Cat Tee</h3>
-                        <p class="price">EM BREVE</p>
-                    </div>
-                    <div class="sizes">
-                        <span class="size-btn disabled">P</span>
-                        <span class="size-btn disabled">M</span>
-                        <span class="size-btn disabled">G</span>
-                        <span class="size-btn disabled">GG</span>
-                        <span class="size-btn disabled">XG</span>
-                    </div>
-                    <button class="add-cart-btn disabled" disabled>EM BREVE</button>
-                </div>
-            </div>
-
-            <!-- Product: Love -->
-            <div class="product-card" data-name="Love Tee" data-price="119.9">
-                <div class="carousel"
-                    data-images="drops/EM BREVE/siscko-love-back.png,drops/EM BREVE/siscko-love-front.png,drops/EM BREVE/siscko-love-back-site.jpg">
-                    <button class="carousel-btn prev-btn">&lt;</button>
-                    <div class="carousel-track">
-                        <img src="drops/EM BREVE/siscko-love-back.png" alt="Siscko Love Back" class="carousel-img active">
-                        <img src="drops/EM BREVE/siscko-love-front.png" alt="Siscko Love Front" class="carousel-img">
-                        <img src="drops/EM BREVE/siscko-love-back-site.jpg" alt="Siscko Love Back Site" class="carousel-img">
-                    </div>
-                    <button class="carousel-btn next-btn">&gt;</button>
-                    <div class="dots-container">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="info-header">
-                        <h3>Love Tee</h3>
-                        <p class="price">EM BREVE</p>
-                    </div>
-                    <div class="sizes">
-                        <span class="size-btn disabled">P</span>
-                        <span class="size-btn disabled">M</span>
-                        <span class="size-btn disabled">G</span>
-                        <span class="size-btn disabled">GG</span>
-                        <span class="size-btn disabled">XG</span>
-                    </div>
-                    <button class="add-cart-btn disabled" disabled>EM BREVE</button>
-                </div>
-            </div>
-
-            <!-- Product: Peoples -->
-            <div class="product-card" data-name="Peoples Tee" data-price="119.9">
-                <div class="carousel"
-                    data-images="drops/EM BREVE/siscko-peoples-back.png,drops/EM BREVE/siscko-peoples-front.png,drops/EM BREVE/siscko-peoples-back-site.jpg">
-                    <button class="carousel-btn prev-btn">&lt;</button>
-                    <div class="carousel-track">
-                        <img src="drops/EM BREVE/siscko-peoples-back.png" alt="Siscko Peoples Back" class="carousel-img active">
-                        <img src="drops/EM BREVE/siscko-peoples-front.png" alt="Siscko Peoples Front" class="carousel-img">
-                        <img src="drops/EM BREVE/siscko-peoples-back-site.jpg" alt="Siscko Peoples Back Site" class="carousel-img">
-                    </div>
-                    <button class="carousel-btn next-btn">&gt;</button>
-                    <div class="dots-container">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="info-header">
-                        <h3>Peoples Tee</h3>
-                        <p class="price">EM BREVE</p>
-                    </div>
-                    <div class="sizes">
-                        <span class="size-btn disabled">P</span>
-                        <span class="size-btn disabled">M</span>
-                        <span class="size-btn disabled">G</span>
-                        <span class="size-btn disabled">GG</span>
-                        <span class="size-btn disabled">XG</span>
-                    </div>
-                    <button class="add-cart-btn disabled" disabled>EM BREVE</button>
-                </div>
-            </div>
-
-            <!-- Product: World Cup -->
-            <div class="product-card" data-name="World Cup Tee" data-price="159.9">
-                <div class="carousel"
-                    data-images="drops/EM BREVE/siscko-world-cup-front.png,drops/EM BREVE/siscko-world-cup-back.png,drops/EM BREVE/siscko-world-cup-back-site.jpg">
-                    <button class="carousel-btn prev-btn">&lt;</button>
-                    <div class="carousel-track">
-                        <img src="drops/EM BREVE/siscko-world-cup-front.png" alt="Siscko World Cup Front" class="carousel-img active">
-                        <img src="drops/EM BREVE/siscko-world-cup-back.png" alt="Siscko World Cup Back" class="carousel-img">
-                        <img src="drops/EM BREVE/siscko-world-cup-back-site.jpg" alt="Siscko World Cup Back Site" class="carousel-img">
-                    </div>
-                    <button class="carousel-btn next-btn">&gt;</button>
-                    <div class="dots-container">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="info-header">
-                        <h3>World Cup Tee</h3>
-                        <p class="price">EM BREVE</p>
-                    </div>
-                    <div class="sizes">
-                        <span class="size-btn disabled">P</span>
-                        <span class="size-btn disabled">M</span>
-                        <span class="size-btn disabled">G</span>
-                        <span class="size-btn disabled">GG</span>
-                        <span class="size-btn disabled">XG</span>
-                    </div>
-                    <button class="add-cart-btn disabled" disabled>EM BREVE</button>
-                </div>
-            </div>
-
+        <div class="grid-container" id="em-breve-grid">
+            <!-- Produtos renderizados dinamicamente pelo script.js -->
         </div>
     </section>
 
@@ -424,6 +160,17 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
 </body>
 
 </html>
