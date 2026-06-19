@@ -28,36 +28,49 @@ collections:
           - label: "Lista de Produtos"
             name: "products"
             widget: "list"
-            summary: '{{fields.name}} | {{fields.status}} | R$ {{fields.price}}'
+            summary: '👕 {{fields.name}} | {{fields.status}} | R$ {{fields.price}}'
             fields:
-              - label: "Nome da Peça"
+              - label: "1. Nome da Peça"
                 name: "name"
                 widget: "string"
                 hint: "Ex: Moletom Chumbo, Basic Tee..."
-              - label: "Preço (R$)"
+              - label: "2. Preço (R$)"
                 name: "price"
                 widget: "number"
                 value_type: "float"
                 default: 0
                 required: false
                 hint: "Use ponto para centavos. Ex: 99.90. Deixe 0 se for lançamento futuro."
-              - label: "Disponibilidade"
+              - label: "3. Disponibilidade"
                 name: "status"
                 widget: "select"
                 options: ["Disponível", "Em Breve"]
                 default: "Disponível"
                 hint: "Peças em breve ficarão com botão desativado e preço oculto."
-              - label: "Sessão do Site"
+              - label: "4. Sessão do Site"
                 name: "category"
                 widget: "select"
                 options: ["CLUB-01", "EM BREVE"]
                 default: "CLUB-01"
                 hint: "Em qual seção da página inicial esta peça deve aparecer?"
-              - label: "Galeria de Fotos"
-                name: "images"
+              - label: "5. Foto Principal (Capa/Vitrine)"
+                name: "main_image"
+                widget: "image"
+                required: false
+                hint: "A foto principal do produto. Geralmente é a foto das COSTAS."
+              - label: "6. Foto Secundária (Hover/Frente)"
+                name: "hover_image"
+                widget: "image"
+                required: false
+                hint: "A foto que aparece ao passar o mouse. Geralmente é a FRENTE."
+              - label: "7. Galeria de Fotos Extras (Opcional)"
+                name: "extra_images"
                 widget: "list"
-                summary: 'Foto {{index}}'
-                hint: "A 1ª foto é a padrão. A 2ª foto é a que aparece quando o cliente passa o mouse por cima (Hover/Costas)."
+                required: false
+                collapsed: false
+                minimize_collapsed: true
+                summary: '📸 Foto Extra {{index}}'
+                hint: "Adicione mais fotos para os detalhes da peça."
                 field: 
                   label: "Upload da Imagem"
                   name: "image"

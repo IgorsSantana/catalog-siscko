@@ -5,9 +5,9 @@
       "price": 99.9,
       "status": "Disponível",
       "category": "CLUB-01",
-      "images": [
-        "drops/CLUB-01/mockup buffling back.png",
-        "drops/CLUB-01/mockup buffling front.png",
+      "main_image": "drops/CLUB-01/mockup buffling back.png",
+      "hover_image": "drops/CLUB-01/mockup buffling front.png",
+      "extra_images": [
         "drops/CLUB-01/buffling 1.jpg",
         "drops/CLUB-01/buffling 2.jpg",
         "drops/CLUB-01/buffling 3.jpg"
@@ -18,9 +18,9 @@
       "price": 99.9,
       "status": "Disponível",
       "category": "CLUB-01",
-      "images": [
-        "drops/CLUB-01/mockup criative department back.png",
-        "drops/CLUB-01/mockup criative department front.png",
+      "main_image": "drops/CLUB-01/mockup criative department back.png",
+      "hover_image": "drops/CLUB-01/mockup criative department front.png",
+      "extra_images": [
         "drops/CLUB-01/creative department 1.jpg",
         "drops/CLUB-01/creative department 2.jpg",
         "drops/CLUB-01/creative department 3.jpg",
@@ -32,29 +32,25 @@
       "price": 0,
       "status": "Em Breve",
       "category": "EM BREVE",
-      "images": [
-        "drops/EM BREVE/moletom chumbo front img.png",
-        "drops/EM BREVE/moletom chumbo back img.png"
-      ]
+      "main_image": "drops/EM BREVE/moletom chumbo front img.png",
+      "hover_image": "drops/EM BREVE/moletom chumbo back img.png"
     },
     {
       "name": "Basic Tee",
       "price": 89.9,
       "status": "Em Breve",
       "category": "EM BREVE",
-      "images": [
-        "drops/EM BREVE/siscko-basic.png",
-        "drops/EM BREVE/siscko-basic-site.jpg"
-      ]
+      "main_image": "drops/EM BREVE/siscko-basic.png",
+      "hover_image": "drops/EM BREVE/siscko-basic-site.jpg"
     },
     {
       "name": "Cat Tee",
       "price": 119.9,
       "status": "Em Breve",
       "category": "EM BREVE",
-      "images": [
-        "drops/EM BREVE/siscko-cat-back.png",
-        "drops/EM BREVE/siscko-cat-front.png",
+      "main_image": "drops/EM BREVE/siscko-cat-back.png",
+      "hover_image": "drops/EM BREVE/siscko-cat-front.png",
+      "extra_images": [
         "drops/EM BREVE/siscko-cat-back-site.jpg"
       ]
     },
@@ -63,9 +59,9 @@
       "price": 119.9,
       "status": "Em Breve",
       "category": "EM BREVE",
-      "images": [
-        "drops/EM BREVE/siscko-love-back.png",
-        "drops/EM BREVE/siscko-love-front.png",
+      "main_image": "drops/EM BREVE/siscko-love-back.png",
+      "hover_image": "drops/EM BREVE/siscko-love-front.png",
+      "extra_images": [
         "drops/EM BREVE/siscko-love-back-site.jpg"
       ]
     },
@@ -74,9 +70,9 @@
       "price": 119.9,
       "status": "Em Breve",
       "category": "EM BREVE",
-      "images": [
-        "drops/EM BREVE/siscko-peoples-back.png",
-        "drops/EM BREVE/siscko-peoples-front.png",
+      "main_image": "drops/EM BREVE/siscko-peoples-back.png",
+      "hover_image": "drops/EM BREVE/siscko-peoples-front.png",
+      "extra_images": [
         "drops/EM BREVE/siscko-peoples-back-site.jpg"
       ]
     },
@@ -85,9 +81,9 @@
       "price": 159.9,
       "status": "Em Breve",
       "category": "EM BREVE",
-      "images": [
-        "drops/EM BREVE/siscko-world-cup-front.png",
-        "drops/EM BREVE/siscko-world-cup-back.png",
+      "main_image": "drops/EM BREVE/siscko-world-cup-front.png",
+      "hover_image": "drops/EM BREVE/siscko-world-cup-back.png",
+      "extra_images": [
         "drops/EM BREVE/siscko-world-cup-back-site.jpg"
       ]
     }

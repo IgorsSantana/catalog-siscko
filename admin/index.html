@@ -14,12 +14,16 @@
     
     /* Botões principais e Login */
     button, .nc-githubAuthenticationPage-button, [class*="Button"] {
-      border-radius: 4px !important;
+      border-radius: 6px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px !important;
+      font-weight: 600 !important;
     }
 
-    /* Topbar - Header do Painel (Força fundo escuro para contrastar com a logo branca) */
+    /* Topbar - Header do Painel */
     [class*="AppHeader"] {
-        background-color: #0a0a0a !important;
+        background-color: #000 !important;
+        border-bottom: 1px solid #222 !important;
     }
     
     [class*="AppHeader"] a {
@@ -28,14 +32,49 @@
 
     /* Sidebar do Painel */
     [class*="SidebarContainer"] {
-        background-color: #f9f9f9 !important;
-        border-right: 1px solid #eee !important;
+        background-color: #f4f4f4 !important;
+        border-right: 1px solid #e5e5e5 !important;
     }
 
     /* Botão de Salvar/Publish */
     [class*="ToolbarContainer"] button:last-child {
         background-color: #000 !important;
         color: #fff !important;
+    }
+
+    /* Labels e Hints (Intuitividade) */
+    label, [class*="Label"] {
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        color: #111 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    [class*="Hint"] {
+        font-size: 13px !important;
+        color: #555 !important;
+        font-style: italic !important;
+        margin-bottom: 10px !important;
+        display: block !important;
+    }
+
+    /* Cards da Lista e Imagens */
+    [class*="ObjectWidgetTopBar"], [class*="ListItemTopBar"] {
+        background-color: #f8f8f8 !important;
+        border-bottom: 1px solid #ddd !important;
+    }
+
+    /* Inputs e Selects */
+    input, select, textarea, [class*="ControlContainer"] {
+        border-radius: 6px !important;
+        border-color: #ccc !important;
+        box-shadow: none !important;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+        border-color: #000 !important;
+        box-shadow: 0 0 0 2px rgba(0,0,0,0.1) !important;
     }
   </style>
 

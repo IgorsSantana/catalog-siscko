@@ -29,8 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
             let imagesHTML = "";
             let dotsHTML = "";
             
-            if (product.images && product.images.length > 0) {
-                product.images.forEach((img, i) => {
+            // Reconstruir o array de imagens a partir da nova estrutura do CMS
+            let productImages = [];
+            if (product.main_image) productImages.push(product.main_image);
+            if (product.hover_image) productImages.push(product.hover_image);
+            if (product.extra_images && product.extra_images.length > 0) {
+                productImages = productImages.concat(product.extra_images);
+            }
+            // Fallback para estrutura antiga caso ainda exista
+            if (productImages.length === 0 && product.images && product.images.length > 0) {
+                productImages = product.images;
+            }
+            
+            if (productImages.length > 0) {
+                productImages.forEach((img, i) => {
                     const activeClass = i === 0 ? "active" : "";
                     imagesHTML += `<img src="${img}" alt="${product.name} ${i+1}" class="carousel-img ${activeClass}">`;
                     dotsHTML += `<span class="dot ${activeClass}"></span>`;
