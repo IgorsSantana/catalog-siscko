@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const allProductsGrid = document.getElementById('all-products-grid');
 
         products.forEach(product => {
+            // Se is_active for estritamente false, não renderizar o produto no site
+            if (product.is_active === false) return;
+
             const isEmBreve = product.status === "Em Breve";
             const priceDisplay = isEmBreve ? "EM BREVE" : `R$ ${product.price.toFixed(2).replace('.', ',')}`;
             const disabledClass = isEmBreve ? "disabled" : "";

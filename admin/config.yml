@@ -30,40 +30,46 @@ collections:
             widget: "list"
             summary: '👕 {{fields.name}} | {{fields.status}} | R$ {{fields.price}}'
             fields:
-              - label: "1. Nome da Peça"
+              - label: "1. Exibir no Site?"
+                name: "is_active"
+                widget: "boolean"
+                default: true
+                required: false
+                hint: "Desligue essa chavinha para ocultar a peça do site sem precisar apagar ela."
+              - label: "2. Nome da Peça"
                 name: "name"
                 widget: "string"
                 hint: "Ex: Moletom Chumbo, Basic Tee..."
-              - label: "2. Preço (R$)"
+              - label: "3. Preço (R$)"
                 name: "price"
                 widget: "number"
                 value_type: "float"
                 default: 0
                 required: false
                 hint: "Use ponto para centavos. Ex: 99.90. Deixe 0 se for lançamento futuro."
-              - label: "3. Disponibilidade"
+              - label: "4. Disponibilidade"
                 name: "status"
                 widget: "select"
                 options: ["Disponível", "Em Breve"]
                 default: "Disponível"
                 hint: "Peças em breve ficarão com botão desativado e preço oculto."
-              - label: "4. Sessão do Site"
+              - label: "5. Sessão do Site"
                 name: "category"
                 widget: "select"
                 options: ["CLUB-01", "EM BREVE"]
                 default: "CLUB-01"
                 hint: "Em qual seção da página inicial esta peça deve aparecer?"
-              - label: "5. Foto Principal (Capa/Vitrine)"
+              - label: "6. Foto Principal (Capa/Vitrine)"
                 name: "main_image"
                 widget: "image"
                 required: false
                 hint: "A foto principal do produto. Geralmente é a foto das COSTAS."
-              - label: "6. Foto Secundária (Hover/Frente)"
+              - label: "7. Foto Secundária (Hover/Frente)"
                 name: "hover_image"
                 widget: "image"
                 required: false
                 hint: "A foto que aparece ao passar o mouse. Geralmente é a FRENTE."
-              - label: "7. Galeria de Fotos Extras (Opcional)"
+              - label: "8. Galeria de Fotos Extras (Opcional)"
                 name: "extra_images"
                 widget: "list"
                 required: false
