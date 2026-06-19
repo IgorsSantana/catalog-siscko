@@ -2,6 +2,12 @@ backend:
   name: git-gateway
   branch: main
 
+# Traduzir a interface para Português
+locale: 'pt'
+
+# Logo da marca no topo do painel
+logo_url: '/logo-white.png'
+
 # Os uploads feitos pelo painel vão para a pasta /uploads
 media_folder: "uploads"
 public_folder: "uploads"
