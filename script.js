@@ -255,10 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 items: items
             };
 
-            const proxyUrl = 'https://corsproxy.io/?';
-            const targetUrl = 'https://api.checkout.infinitepay.io/links';
-            
-            const response = await fetch(proxyUrl + encodeURIComponent(targetUrl), {
+            // Chama o nosso próprio proxy em PHP (para evitar problemas de CORS)
+            const response = await fetch('checkout.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
