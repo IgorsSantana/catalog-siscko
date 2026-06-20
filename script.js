@@ -429,8 +429,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    closeCartBtn.addEventListener('click', closeCart);
-    cartOverlay.addEventListener('click', closeCart);
+    if (closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
+    if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
 
     const updateCartUI = () => {
         cartItemsContainer.innerHTML = '';
@@ -522,8 +522,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Checkout to InfinitePay
-    checkoutBtn.addEventListener('click', async () => {
-        if (cart.length === 0) {
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', async () => {
+            if (cart.length === 0) {
             alert("Seu carrinho está vazio!");
             return;
         }
@@ -582,7 +583,9 @@ document.addEventListener('DOMContentLoaded', () => {
             checkoutBtn.innerText = originalText;
             checkoutBtn.disabled = false;
         }
+        }
     });
+    }
 
     // Modal Global Logic
     const openImageModal = (imagesArray, startIndex) => {
