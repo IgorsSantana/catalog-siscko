@@ -92,7 +92,7 @@ collections:
           - label: "Banners Desktop (Carrossel)"
             name: "desktop_banners"
             widget: "list"
-            hint: "Banners que aparecem no computador. O primeiro será a capa principal."
+            hint: "Banners que aparecem no computador. Tamanho recomendado: 1920x800 px."
             field:
               label: "Upload da Imagem"
               name: "image"
@@ -100,4 +100,4 @@ collections:
           - label: "Banner Mobile (Celular)"
             name: "mobile_banner"
             widget: "image"
-            hint: "Banner que aparece no celular (formato retrato)."
+            hint: "Banner que aparece no celular. Tamanho recomendado: 1080x1920 px (formato retrato)."
