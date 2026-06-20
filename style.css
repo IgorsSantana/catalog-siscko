@@ -833,6 +833,7 @@ footer {
         width: 100%;
         max-width: 100%;
         right: -100%;
+        padding-bottom: 70px;
     }
     
     body {
@@ -1031,4 +1032,9 @@ footer {
     .cookie-text {
         text-align: left;
     }
+}
+
+/* Forçar o modal de Login da Netlify a ficar acima de todas as navbars */
+#netlify-identity-widget {
+    z-index: 10000 !important;
 }
