@@ -119,6 +119,11 @@
     <section class="dashboard-section" style="display:none;" id="dashboard-content">
         <div class="dashboard-header">
             <h1>Painel de Vendas (CRM)</h1>
+            <select id="period-filter" style="padding: 0.5rem; background: #222; color: #fff; border: 1px solid #444; border-radius: 4px; font-family: 'Inter', sans-serif;">
+                <option value="all">Todo o Período</option>
+                <option value="30">Últimos 30 Dias</option>
+                <option value="7">Últimos 7 Dias</option>
+            </select>
         </div>
 
         <div class="kpi-container">
@@ -149,6 +154,20 @@
                 <h3>Status dos Pedidos</h3>
                 <canvas id="statusChart"></canvas>
             </div>
+        </div>
+
+        <div class="chart-box" style="margin-top: 2rem;">
+            <h3>Produtos Mais Vendidos</h3>
+            <table class="orders-table" style="width: 100%; text-align: left; margin-top: 1rem; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th style="padding: 1rem; border-bottom: 1px solid #333; color: #fff; background: #1a1a1a;">Produto</th>
+                        <th style="padding: 1rem; border-bottom: 1px solid #333; color: #fff; background: #1a1a1a;">Qtd. Vendida</th>
+                    </tr>
+                </thead>
+                <tbody id="top-products-body">
+                </tbody>
+            </table>
         </div>
     </section>
 
@@ -185,6 +204,15 @@
                 }
             }
 
+            let allPedidos = [];
+            let allCarrinhos = [];
+            let salesChartInstance = null;
+            let statusChartInstance = null;
+
+            document.getElementById('period-filter').addEventListener('change', (e) => {
+                renderDashboard(e.target.value);
+            });
+
             async function fetchDashboardData(user) {
                 try {
                     const token = await user.jwt();
@@ -200,19 +228,31 @@
                     if (!response.ok) throw new Error('Falha ao buscar dados');
                     
                     const data = await response.json();
-                    renderDashboard(data.pedidos || [], data.carrinhos || []);
+                    allPedidos = data.pedidos || [];
+                    allCarrinhos = data.carrinhos || [];
+                    renderDashboard('all');
                 } catch (error) {
                     console.error(error);
                     showError("Erro ao conectar com o banco de dados.");
                 }
             }
 
-            function renderDashboard(pedidos, carrinhos) {
+            function renderDashboard(period) {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('dashboard-content').style.display = 'block';
 
+                let filteredPedidos = allPedidos;
+                let filteredCarrinhos = allCarrinhos;
+
+                if (period !== 'all') {
+                    const cutoff = new Date();
+                    cutoff.setDate(cutoff.getDate() - parseInt(period));
+                    filteredPedidos = allPedidos.filter(p => new Date(p.created_at) >= cutoff);
+                    filteredCarrinhos = allCarrinhos.filter(c => new Date(c.updated_at) >= cutoff);
+                }
+
                 // Cálculos de KPI
-                const pedidosAprovados = pedidos.filter(p => p.status && p.status.includes('pago'));
+                const pedidosAprovados = filteredPedidos.filter(p => p.status && p.status.includes('pago'));
                 const receitaTotalCents = pedidosAprovados.reduce((acc, p) => acc + (p.total_cents || 0), 0);
                 const ticketMedioCents = pedidosAprovados.length > 0 ? (receitaTotalCents / pedidosAprovados.length) : 0;
 
@@ -220,17 +260,43 @@
 
                 document.getElementById('kpi-revenue').innerText = formatCurrency(receitaTotalCents);
                 document.getElementById('kpi-sales').innerText = pedidosAprovados.length;
-                document.getElementById('kpi-carts').innerText = carrinhos.length;
+                document.getElementById('kpi-carts').innerText = filteredCarrinhos.length;
                 document.getElementById('kpi-ticket').innerText = formatCurrency(ticketMedioCents);
 
+                // Top Produtos
+                const productSales = {};
+                pedidosAprovados.forEach(pedido => {
+                    if (pedido.items) {
+                        pedido.items.forEach(item => {
+                            const name = item.description || 'Produto Sem Nome';
+                            productSales[name] = (productSales[name] || 0) + item.quantity;
+                        });
+                    }
+                });
+
+                const topProducts = Object.entries(productSales).sort((a,b) => b[1] - a[1]).slice(0, 10);
+                const tbody = document.getElementById('top-products-body');
+                tbody.innerHTML = '';
+                if (topProducts.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="2" style="padding: 1rem; color: #888;">Nenhuma venda neste período.</td></tr>';
+                } else {
+                    topProducts.forEach(([name, qty]) => {
+                        tbody.innerHTML += `<tr><td style="padding:1rem; border-bottom:1px solid #222;">${name}</td><td style="padding:1rem; border-bottom:1px solid #222;">${qty}</td></tr>`;
+                    });
+                }
+
+                // Limpar gráficos antigos
+                if (statusChartInstance) statusChartInstance.destroy();
+                if (salesChartInstance) salesChartInstance.destroy();
+
                 // Gráfico de Status (Pizza)
-                const statusCounts = pedidos.reduce((acc, p) => {
+                const statusCounts = filteredPedidos.reduce((acc, p) => {
                     const s = p.status || 'desconhecido';
                     acc[s] = (acc[s] || 0) + 1;
                     return acc;
                 }, {});
 
-                new Chart(document.getElementById('statusChart'), {
+                statusChartInstance = new Chart(document.getElementById('statusChart'), {
                     type: 'doughnut',
                     data: {
                         labels: Object.keys(statusCounts),
@@ -245,18 +311,22 @@
                     }
                 });
 
-                // Gráfico de Evolução (Linha) - Agrupar por data (simplificado)
-                const vendasPorDia = pedidos.reduce((acc, p) => {
+                // Gráfico de Evolução (Linha) - Agrupar por data
+                const vendasPorDia = filteredPedidos.reduce((acc, p) => {
                     if(!p.created_at) return acc;
                     const date = new Date(p.created_at).toLocaleDateString('pt-BR');
                     acc[date] = (acc[date] || 0) + 1;
                     return acc;
                 }, {});
 
-                const datas = Object.keys(vendasPorDia).sort((a,b) => a.localeCompare(b));
+                const datas = Object.keys(vendasPorDia).sort((a,b) => {
+                    const [da, ma, ya] = a.split('/');
+                    const [db, mb, yb] = b.split('/');
+                    return new Date(`${ya}-${ma}-${da}`) - new Date(`${yb}-${mb}-${db}`);
+                });
                 const qtds = datas.map(d => vendasPorDia[d]);
 
-                new Chart(document.getElementById('salesChart'), {
+                salesChartInstance = new Chart(document.getElementById('salesChart'), {
                     type: 'line',
                     data: {
                         labels: datas,
