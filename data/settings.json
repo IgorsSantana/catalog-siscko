@@ -1,7 +1,6 @@
 {
   "desktop_banners": [
-    "banner-desktop.jpg",
-    "banner-desktop-2.png"
+    "uploads/banner-club01.png"
   ],
-  "mobile_banner": "banner-mobile.jpg"
+  "mobile_banner": "uploads/banner-club01-mobile.png"
 }
