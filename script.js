@@ -504,8 +504,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (data.localidade === 'Bicas' || data.localidade === 'Juiz de Fora') {
                     shippingCost = 10;
-                } else if (data.uf === 'SP') {
-                    shippingCost = 15;
                 } else {
                     shippingCost = 30;
                 }
