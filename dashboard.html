@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISCKO | Dashboard (Admin)</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Chart.js para os gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        .dashboard-section {
+            padding: 8rem 5% 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: #ccc;
+            min-height: 80vh;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 1rem;
+        }
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            text-transform: uppercase;
+        }
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .kpi-card {
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .kpi-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-color);
+        }
+        .kpi-value.green { color: #25D366; }
+        .kpi-value.red { color: #ff4444; }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        .chart-box {
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .chart-box h3 {
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            text-transform: uppercase;
+            font-size: 1.2rem;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: #fff;
+            font-size: 1.5rem;
+            flex-direction: column;
+        }
+        .error-message { color: #ff4444; margin-top: 1rem; text-align: center; max-width: 600px; }
+
+        @media (max-width: 768px) {
+            .charts-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo-white.png" alt="SISCKO" class="logo-img">
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Voltar para Home</a></li>
+            <li><a href="conta.html">Voltar para Conta</a></li>
+        </ul>
+    </nav>
+
+    <div id="loading" class="loading-overlay">
+        <div>Autenticando e buscando dados...</div>
+        <div id="error-msg" class="error-message"></div>
+    </div>
+
+    <section class="dashboard-section" style="display:none;" id="dashboard-content">
+        <div class="dashboard-header">
+            <h1>Painel de Vendas (CRM)</h1>
+        </div>
+
+        <div class="kpi-container">
+            <div class="kpi-card">
+                <span class="kpi-title">Faturamento Total (Aprovado)</span>
+                <span class="kpi-value green" id="kpi-revenue">R$ 0,00</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Vendas Aprovadas</span>
+                <span class="kpi-value" id="kpi-sales">0</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Carrinhos Abandonados</span>
+                <span class="kpi-value red" id="kpi-carts">0</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Ticket Médio</span>
+                <span class="kpi-value" id="kpi-ticket">R$ 0,00</span>
+            </div>
+        </div>
+
+        <div class="charts-container">
+            <div class="chart-box">
+                <h3>Evolução de Pedidos</h3>
+                <canvas id="salesChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Status dos Pedidos</h3>
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkAdminAuth = () => {
+                const user = window.netlifyIdentity && window.netlifyIdentity.currentUser();
+                if (!user) {
+                    showError("Você não está logado. Redirecionando...");
+                    setTimeout(() => window.location.href = 'index.html', 2000);
+                    return;
+                }
+
+                const roles = user.app_metadata?.roles || [];
+                if (!roles.includes('admin')) {
+                    showError("Acesso Negado. Você não tem privilégios de administrador.");
+                    setTimeout(() => window.location.href = 'index.html', 3000);
+                    return;
+                }
+
+                fetchDashboardData(user);
+            };
+
+            function showError(msg) {
+                document.getElementById('error-msg').innerText = msg;
+            }
+
+            if (window.netlifyIdentity) {
+                window.netlifyIdentity.on('init', () => { checkAdminAuth(); });
+                if(window.netlifyIdentity.currentUser()) {
+                    checkAdminAuth();
+                } else {
+                    setTimeout(checkAdminAuth, 1000);
+                }
+            }
+
+            async function fetchDashboardData(user) {
+                try {
+                    const token = await user.jwt();
+                    const response = await fetch('/.netlify/functions/admin-stats', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+
+                    if (response.status === 403) {
+                        showError("Acesso Negado pelo Servidor.");
+                        setTimeout(() => window.location.href = 'index.html', 3000);
+                        return;
+                    }
+                    if (!response.ok) throw new Error('Falha ao buscar dados');
+                    
+                    const data = await response.json();
+                    renderDashboard(data.pedidos || [], data.carrinhos || []);
+                } catch (error) {
+                    console.error(error);
+                    showError("Erro ao conectar com o banco de dados.");
+                }
+            }
+
+            function renderDashboard(pedidos, carrinhos) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard-content').style.display = 'block';
+
+                // Cálculos de KPI
+                const pedidosAprovados = pedidos.filter(p => p.status && p.status.includes('pago'));
+                const receitaTotalCents = pedidosAprovados.reduce((acc, p) => acc + (p.total_cents || 0), 0);
+                const ticketMedioCents = pedidosAprovados.length > 0 ? (receitaTotalCents / pedidosAprovados.length) : 0;
+
+                const formatCurrency = (cents) => (cents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+                document.getElementById('kpi-revenue').innerText = formatCurrency(receitaTotalCents);
+                document.getElementById('kpi-sales').innerText = pedidosAprovados.length;
+                document.getElementById('kpi-carts').innerText = carrinhos.length;
+                document.getElementById('kpi-ticket').innerText = formatCurrency(ticketMedioCents);
+
+                // Gráfico de Status (Pizza)
+                const statusCounts = pedidos.reduce((acc, p) => {
+                    const s = p.status || 'desconhecido';
+                    acc[s] = (acc[s] || 0) + 1;
+                    return acc;
+                }, {});
+
+                new Chart(document.getElementById('statusChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(statusCounts),
+                        datasets: [{
+                            data: Object.values(statusCounts),
+                            backgroundColor: ['#444', '#25D366', '#ff4444', '#ffcc00', '#888'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        plugins: { legend: { labels: { color: '#ccc' } } }
+                    }
+                });
+
+                // Gráfico de Evolução (Linha) - Agrupar por data (simplificado)
+                const vendasPorDia = pedidos.reduce((acc, p) => {
+                    if(!p.created_at) return acc;
+                    const date = new Date(p.created_at).toLocaleDateString('pt-BR');
+                    acc[date] = (acc[date] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const datas = Object.keys(vendasPorDia).sort((a,b) => a.localeCompare(b));
+                const qtds = datas.map(d => vendasPorDia[d]);
+
+                new Chart(document.getElementById('salesChart'), {
+                    type: 'line',
+                    data: {
+                        labels: datas,
+                        datasets: [{
+                            label: 'Qtd. Pedidos',
+                            data: qtds,
+                            borderColor: '#fff',
+                            tension: 0.1,
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: { ticks: { color: '#888', stepSize: 1 }, grid: { color: '#333' } },
+                            x: { ticks: { color: '#888' }, grid: { color: '#333' } }
+                        },
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -117,7 +117,10 @@
     <section class="account-section">
         <div class="account-header">
             <h1 id="user-greeting">Carregando...</h1>
-            <button id="btn-logout" class="logout-btn">Sair da Conta</button>
+            <div style="display: flex; gap: 1rem;">
+                <button id="btn-admin" class="logout-btn" style="display:none; color: #ccc; border-color: #555;">Painel de Vendas (CRM)</button>
+                <button id="btn-logout" class="logout-btn">Sair da Conta</button>
+            </div>
         </div>
 
         <h2>Meus Pedidos</h2>
@@ -190,6 +193,15 @@
                 document.getElementById('btn-logout').addEventListener('click', () => {
                     window.netlifyIdentity.logout();
                 });
+
+                const roles = user.app_metadata?.roles || [];
+                if (roles.includes('admin')) {
+                    const btnAdmin = document.getElementById('btn-admin');
+                    btnAdmin.style.display = 'block';
+                    btnAdmin.addEventListener('click', () => {
+                        window.location.href = 'dashboard.html';
+                    });
+                }
 
                 fetchOrders(user);
             };
