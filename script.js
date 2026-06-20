@@ -1,5 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --- Helper function para prevenir XSS ---
+    function escapeHTML(str) {
+        if (typeof str !== 'string') return str;
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
     // --- Fetch and Render Products ---
     fetch('data/products.json')
         .then(res => {
@@ -57,7 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (productImages.length > 0) {
                 productImages.forEach((img, i) => {
                     const activeClass = i === 0 ? "active" : "";
-                    imagesHTML += `<img src="${img}" alt="${product.name} ${i+1}" class="carousel-img ${activeClass}">`;
+                    const safeImg = escapeHTML(img);
+                    imagesHTML += `<img src="${safeImg}" alt="${escapeHTML(product.name)} ${i+1}" class="carousel-img ${activeClass}">`;
                     dotsHTML += `<span class="dot ${activeClass}"></span>`;
                 });
             } else {
@@ -65,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const cardHTML = `
-                <div class="product-card" data-name="${product.name}" data-price="${product.price}">
+                <div class="product-card" data-name="${escapeHTML(product.name)}" data-price="${product.price}">
                     <div class="carousel">
                         <button class="carousel-btn prev-btn">&lt;</button>
                         <div class="carousel-track">
@@ -78,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="product-info">
                         <div class="info-header">
-                            <h3>${product.name}</h3>
+                            <h3>${escapeHTML(product.name)}</h3>
                             <p class="price">${priceDisplay}</p>
                         </div>
                         <div class="sizes">
@@ -152,9 +167,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (lookbookGrid && data && data.lookbook) {
                 data.lookbook.forEach((imgSrc, index) => {
                     if (imgSrc) {
+                        const safeImgSrc = escapeHTML(imgSrc);
                         const imgHTML = `
                             <div class="lookbook-item">
-                                <img src="${imgSrc}" alt="Lookbook Image ${index + 1}" class="lookbook-img">
+                                <img src="${safeImgSrc}" alt="Lookbook Image ${index + 1}" class="lookbook-img">
                             </div>
                         `;
                         lookbookGrid.insertAdjacentHTML('beforeend', imgHTML);
@@ -393,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 itemEl.className = 'cart-item';
                 itemEl.innerHTML = `
                     <div class="cart-item-info">
-                        <h4>${item.quantity}x ${item.name} (${item.size})</h4>
+                        <h4>${item.quantity}x ${escapeHTML(item.name)} (${escapeHTML(item.size)})</h4>
                         <p>R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</p>
                     </div>
                     <button class="remove-item" data-index="${index}">Remover</button>
@@ -518,6 +534,21 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
             });
+        });
+    }
+
+    // LGPD Cookie Consent Logic
+    const cookieBanner = document.getElementById('cookie-banner');
+    const acceptCookiesBtn = document.getElementById('accept-cookies');
+    
+    if (cookieBanner && acceptCookiesBtn) {
+        if (!localStorage.getItem('cookiesAccepted')) {
+            cookieBanner.classList.add('show');
+        }
+
+        acceptCookiesBtn.addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', 'true');
+            cookieBanner.classList.remove('show');
         });
     }
 
