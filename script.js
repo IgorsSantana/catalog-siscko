@@ -99,38 +99,82 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    // --- Fetch and Render Banners ---
+    fetch('data/settings.json')
+        .then(res => {
+            if (!res.ok) throw new Error("Não foi possível carregar as configurações");
+            return res.json();
+        })
+        .then(data => {
+            if (data) {
+                // Desktop Banners
+                if (data.desktop_banners && data.desktop_banners.length > 0) {
+                    const heroTrack = document.querySelector('.hero-carousel-track');
+                    if (heroTrack) {
+                        heroTrack.innerHTML = '';
+                        data.desktop_banners.forEach((banner, index) => {
+                            const activeClass = index === 0 ? "active" : "";
+                            heroTrack.insertAdjacentHTML('beforeend', `<img src="${banner}" alt="Banner Desktop ${index+1}" class="hero-slide ${activeClass}">`);
+                        });
+                    }
+                }
+                
+                // Mobile Banner
+                if (data.mobile_banner) {
+                    const heroBgMobile = document.querySelector('.hero-bg.mobile-only img');
+                    if (heroBgMobile) {
+                        heroBgMobile.src = data.mobile_banner;
+                    }
+                }
+            }
+            initHeroCarousel();
+        })
+        .catch(err => {
+            console.error("Erro carregando banners, usando padrão:", err);
+            initHeroCarousel(); // Fallback to hardcoded HTML
+        });
+
     // --- Hero Carousel Logic ---
-    const heroTrack = document.querySelector('.hero-carousel-track');
-    if (heroTrack) {
-        const slides = document.querySelectorAll('.hero-slide');
-        const nextHero = document.querySelector('.next-hero');
-        const prevHero = document.querySelector('.prev-hero');
-        let currentHero = 0;
+    function initHeroCarousel() {
+        const heroTrack = document.querySelector('.hero-carousel-track');
+        if (heroTrack) {
+            const slides = document.querySelectorAll('.hero-slide');
+            const nextHero = document.querySelector('.next-hero');
+            const prevHero = document.querySelector('.prev-hero');
+            let currentHero = 0;
 
-        if (slides.length > 1) {
-            const updateHero = (index) => {
-                heroTrack.style.transform = `translateX(-${index * 100}%)`;
-                currentHero = index;
-            };
+            if (slides.length > 1) {
+                const updateHero = (index) => {
+                    heroTrack.style.transform = `translateX(-${index * 100}%)`;
+                    currentHero = index;
+                };
 
-            nextHero.addEventListener('click', () => {
-                let next = currentHero + 1;
-                if (next >= slides.length) next = 0;
-                updateHero(next);
-            });
+                if (nextHero) {
+                    nextHero.addEventListener('click', () => {
+                        let next = currentHero + 1;
+                        if (next >= slides.length) next = 0;
+                        updateHero(next);
+                    });
+                }
 
-            prevHero.addEventListener('click', () => {
-                let prev = currentHero - 1;
-                if (prev < 0) prev = slides.length - 1;
-                updateHero(prev);
-            });
+                if (prevHero) {
+                    prevHero.addEventListener('click', () => {
+                        let prev = currentHero - 1;
+                        if (prev < 0) prev = slides.length - 1;
+                        updateHero(prev);
+                    });
+                }
 
-            // Auto play
-            setInterval(() => {
-                let next = currentHero + 1;
-                if (next >= slides.length) next = 0;
-                updateHero(next);
-            }, 6000);
+                // Auto play
+                setInterval(() => {
+                    let next = currentHero + 1;
+                    if (next >= slides.length) next = 0;
+                    updateHero(next);
+                }, 6000);
+            } else {
+                if (nextHero) nextHero.style.display = 'none';
+                if (prevHero) prevHero.style.display = 'none';
+            }
         }
     }
 

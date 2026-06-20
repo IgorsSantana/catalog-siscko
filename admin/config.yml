@@ -81,3 +81,23 @@ collections:
                   label: "Upload da Imagem"
                   name: "image"
                   widget: "image"
+  - name: "settings"
+    label: "Configurações do Site"
+    files:
+      - label: "Banners da Página Inicial"
+        name: "banners"
+        file: "data/settings.json"
+        description: "Altere os banners principais do site."
+        fields:
+          - label: "Banners Desktop (Carrossel)"
+            name: "desktop_banners"
+            widget: "list"
+            hint: "Banners que aparecem no computador. O primeiro será a capa principal."
+            field:
+              label: "Upload da Imagem"
+              name: "image"
+              widget: "image"
+          - label: "Banner Mobile (Celular)"
+            name: "mobile_banner"
+            widget: "image"
+            hint: "Banner que aparece no celular (formato retrato)."
