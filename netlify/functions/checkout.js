@@ -52,19 +52,27 @@ exports.handler = async (event, context) => {
             }
         }
 
-        // Adiciona identificador único do pedido para o Webhook depois saber qual atualizar
-        payload.metadata = {
-            pedido_id: pedidoId,
-            user_id: user ? user.sub : 'guest'
-        };
+        // Adiciona identificador único do pedido (order_nsu) conforme documentação da InfinitePay
+        payload.order_nsu = pedidoId;
 
-        // Faz a requisição de servidor para servidor para a InfinitePay
+        // Configura a URL de webhook dinamicamente baseada no domínio atual
+        const host = event.headers.host || 'seusite.com';
+        const protocol = host.includes('localhost') ? 'http' : 'https';
+        payload.webhook_url = `${protocol}://${host}/.netlify/functions/webhook-infinity`;
+
+        // Se tiver usuário logado, envia os dados para agilizar o preenchimento do checkout
+        if (user) {
+            payload.customer = {
+                name: user.user_metadata?.full_name || user.email.split('@')[0],
+                email: user.email
+            };
+        }
+
+        // Faz a requisição para a InfinitePay (sem necessidade de Token, pois usa a handle)
         const response = await fetch('https://api.checkout.infinitepay.io/links', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                // Aqui entraria o Token da InfinityPay em produção
-                // 'Authorization': `Bearer ${process.env.INFINITYPAY_TOKEN}`
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
         });
