@@ -879,3 +879,42 @@ footer {
 .carousel-img {
     cursor: zoom-in;
 }
+
+/* Lookbook Grid */
+.lookbook-grid {
+    column-count: 1;
+    column-gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+@media (min-width: 768px) {
+    .lookbook-grid {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 1024px) {
+    .lookbook-grid {
+        column-count: 3;
+    }
+}
+
+.lookbook-item {
+    break-inside: avoid;
+    margin-bottom: 2rem;
+    position: relative;
+    cursor: zoom-in;
+    overflow: hidden;
+}
+
+.lookbook-item img {
+    width: 100%;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.lookbook-item:hover img {
+    transform: scale(1.02);
+}

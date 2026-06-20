@@ -144,6 +144,35 @@ document.addEventListener('DOMContentLoaded', () => {
             initHeroCarousel(); // Fallback to hardcoded HTML
         });
 
+    // --- Fetch and Render Lookbook ---
+    fetch('data/lookbook.json')
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+            const lookbookGrid = document.getElementById('lookbook-grid');
+            if (lookbookGrid && data && data.lookbook) {
+                data.lookbook.forEach((imgSrc, index) => {
+                    if (imgSrc) {
+                        const imgHTML = `
+                            <div class="lookbook-item">
+                                <img src="${imgSrc}" alt="Lookbook Image ${index + 1}" class="lookbook-img">
+                            </div>
+                        `;
+                        lookbookGrid.insertAdjacentHTML('beforeend', imgHTML);
+                    }
+                });
+                
+                // Attach modal events to lookbook images
+                document.querySelectorAll('.lookbook-img').forEach(img => {
+                    img.addEventListener('click', (e) => {
+                        const allLookbookImgs = Array.from(lookbookGrid.querySelectorAll('.lookbook-img'));
+                        const idx = allLookbookImgs.indexOf(e.target);
+                        openImageModal(allLookbookImgs, idx);
+                    });
+                });
+            }
+        })
+        .catch(err => console.error("Erro carregando lookbook:", err));
+
     // --- Hero Carousel Logic ---
     function initHeroCarousel() {
         const heroTrack = document.querySelector('.hero-carousel-track');

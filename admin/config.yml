@@ -81,6 +81,19 @@ collections:
                   label: "Upload da Imagem"
                   name: "image"
                   widget: "image"
+      - label: "Galeria do Lookbook"
+        name: "lookbook"
+        file: "data/lookbook.json"
+        description: "Adicione fotos de estilo para a página de Lookbook."
+        fields:
+          - label: "Fotos do Lookbook"
+            name: "lookbook"
+            widget: "list"
+            hint: "Adicione as fotos aqui. Elas aparecerão em formato de galeria na página de Lookbook."
+            field:
+              label: "Upload da Imagem"
+              name: "image"
+              widget: "image"
   - name: "settings"
     label: "Configurações do Site"
     files:
