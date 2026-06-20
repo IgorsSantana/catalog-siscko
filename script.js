@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 productImages.forEach((img, i) => {
                     const activeClass = i === 0 ? "active" : "";
                     const safeImg = escapeHTML(img);
-                    imagesHTML += `<img src="${safeImg}" alt="${escapeHTML(product.name)} ${i+1}" class="carousel-img ${activeClass}">`;
+                    imagesHTML += `<img src="${safeImg}" alt="${escapeHTML(product.name)} ${i+1}" class="carousel-img ${activeClass}" loading="lazy">`;
                     dotsHTML += `<span class="dot ${activeClass}"></span>`;
                 });
             } else {
@@ -455,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         cartCountEl.innerText = totalCount;
-        cartTotalPriceEl.innerText = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+        cartTotalPriceEl.innerText = `R$ ${(totalPrice + shippingCost).toFixed(2).replace('.', ',')}`;
 
         document.querySelectorAll('.remove-item').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -464,7 +464,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateCartUI();
             });
         });
+        
+        saveCartToSupabase();
     };
+
+    function saveCartToSupabase() {
+        const user = window.netlifyIdentity ? window.netlifyIdentity.currentUser() : null;
+        if (!user || cart.length === 0) return;
+        
+        user.jwt().then(token => {
+            fetch('/.netlify/functions/save-cart', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cart: cart })
+            }).catch(e => console.log("Erro silencioso ao salvar carrinho:", e));
+        });
+    }
+
+    let shippingCost = 0;
+    const calcShippingBtn = document.getElementById('calc-shipping-btn');
+    const cepInput = document.getElementById('cep-input');
+    const shippingResult = document.getElementById('shipping-result');
+
+    if (calcShippingBtn && cepInput && shippingResult) {
+        calcShippingBtn.addEventListener('click', async () => {
+            const cep = cepInput.value.replace(/\D/g, '');
+            if (cep.length !== 8) {
+                shippingResult.innerText = "CEP inválido.";
+                return;
+            }
+            shippingResult.innerText = "Calculando...";
+            try {
+                const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await res.json();
+                if (data.erro) throw new Error();
+                
+                if (data.uf === 'SP') {
+                    shippingCost = 15;
+                } else {
+                    shippingCost = 30;
+                }
+                shippingResult.innerHTML = `Frete (${data.uf}): <span style="color:#fff;">R$ ${shippingCost.toFixed(2).replace('.',',')}</span>`;
+                updateCartUI();
+            } catch (err) {
+                shippingResult.innerText = "Erro ao buscar CEP.";
+            }
+        });
+    }
 
     // Checkout to InfinitePay
     checkoutBtn.addEventListener('click', async () => {
@@ -483,6 +532,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 price: Math.round(item.price * 100), // Converte para centavos
                 description: `${item.name} (Tamanho: ${item.size})`
             }));
+
+            if (shippingCost > 0) {
+                items.push({
+                    quantity: 1,
+                    price: Math.round(shippingCost * 100),
+                    description: "Frete"
+                });
+            }
 
             const payload = {
                 handle: "siscko",
