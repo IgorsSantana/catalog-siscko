@@ -4,7 +4,7 @@
       "is_active": true,
       "name": "Buffling Tee",
       "price": 99.9,
-      "status": "Disponível",
+      "status": "Esgotado",
       "category": "CLUB-01",
       "main_image": "drops/CLUB-01/mockup buffling back.png",
       "hover_image": "drops/CLUB-01/mockup buffling front.png",
