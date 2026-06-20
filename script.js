@@ -433,6 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
 
     const updateCartUI = () => {
+        if (!cartItemsContainer || !cartCountEls) return;
         cartItemsContainer.innerHTML = '';
         let totalCount = 0;
         let totalPrice = 0;
@@ -458,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         cartCountEls.forEach(el => el.innerText = totalCount);
-        cartTotalPriceEl.innerText = `R$ ${(totalPrice + shippingCost).toFixed(2).replace('.', ',')}`;
+        if (cartTotalPriceEl) cartTotalPriceEl.innerText = `R$ ${(totalPrice + shippingCost).toFixed(2).replace('.', ',')}`;
 
         localStorage.setItem('siscko_cart', JSON.stringify(cart));
 
@@ -582,7 +583,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             checkoutBtn.innerText = originalText;
             checkoutBtn.disabled = false;
-        }
         }
     });
     }
