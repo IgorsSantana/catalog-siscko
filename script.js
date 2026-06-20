@@ -20,14 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateLoginState(user) {
         if (loginLink) {
             if (user) {
-                const name = user.user_metadata?.full_name || user.email.split('@')[0];
-                loginLink.innerText = `Olá, ${name} (Sair)`;
+                loginLink.innerText = `Minha Conta`;
                 loginLink.onclick = (e) => {
                     e.preventDefault();
-                    if(window.netlifyIdentity) window.netlifyIdentity.logout();
+                    window.location.href = 'conta.html';
                 };
             } else {
-                loginLink.innerText = "Minha Conta / Login";
+                loginLink.innerText = "Entrar / Cadastrar";
                 loginLink.onclick = (e) => {
                     e.preventDefault();
                     if(window.netlifyIdentity) window.netlifyIdentity.open('login');

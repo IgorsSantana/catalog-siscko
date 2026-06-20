@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISCKO | Minha Conta</title>
+    <meta name="description" content="Área do cliente SISCKO.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+        .account-section {
+            padding: 8rem 5% 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            color: #ccc;
+            min-height: 70vh;
+        }
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 1rem;
+        }
+        .account-header h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            text-transform: uppercase;
+        }
+        .logout-btn {
+            background: transparent;
+            color: #ff4444;
+            border: 1px solid #ff4444;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .logout-btn:hover {
+            background: #ff4444;
+            color: #fff;
+        }
+        .orders-table-wrapper {
+            overflow-x: auto;
+        }
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin-top: 2rem;
+        }
+        .orders-table th {
+            background-color: #1a1a1a;
+            padding: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #333;
+            color: var(--text-color);
+        }
+        .orders-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #222;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        .orders-table tr:hover td {
+            background-color: #151515;
+            color: var(--text-color);
+        }
+        .status-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-pendente { background-color: #444; color: #fff; }
+        .status-pago { background-color: #25D366; color: #fff; }
+        .status-recusado { background-color: #ff4444; color: #fff; }
+        
+        .loading-orders {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo-white.png" alt="SISCKO" class="logo-img">
+        </a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html#club-01">CLUB-01</a></li>
+            <li><a href="index.html#em-breve">Em Breve</a></li>
+            <li><a href="todos.html">Todos</a></li>
+            <li><a href="lookbook.html">Lookbook</a></li>
+            <li><a href="#" id="login-link">Minha Conta</a></li>
+            <li><a href="index.html#about">About</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="#" id="cart-icon" class="cart-icon">CART (<span id="cart-count">0</span>)</a>
+            <button class="hamburger" id="hamburger">☰</button>
+        </div>
+    </nav>
+
+    <section class="account-section">
+        <div class="account-header">
+            <h1 id="user-greeting">Carregando...</h1>
+            <button id="btn-logout" class="logout-btn">Sair da Conta</button>
+        </div>
+
+        <h2>Meus Pedidos</h2>
+        <div class="orders-table-wrapper">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Data</th>
+                        <th>Itens</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-body">
+                    <tr><td colspan="5" class="loading-orders">Buscando seus pedidos...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer id="about">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="logo-white.png" alt="SISCKO" class="logo-img-footer">
+            </div>
+            <p>Streetwear culture redefined. Designed for the streets.</p>
+            <div class="socials">
+                <a href="https://instagram.com/sisckobr" target="_blank">Instagram</a>
+                <a href="https://wa.me/5532999782790" target="_blank">WhatsApp</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 SISCKO. Todos os direitos reservados. | <a href="privacidade.html" style="color: #888; text-decoration: underline;">Política de Privacidade</a> | <a href="termos.html" style="color: #888; text-decoration: underline;">Termos de Uso</a></p>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2>YOUR CART</h2>
+            <button id="close-cart" class="close-btn">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p class="empty-cart-msg">Your cart is empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>TOTAL:</span>
+                <span id="cart-total-price">R$ 0,00</span>
+            </div>
+            <button id="checkout-btn" class="btn checkout-btn">CHECKOUT</button>
+        </div>
+    </div>
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkAuth = () => {
+                const user = window.netlifyIdentity && window.netlifyIdentity.currentUser();
+                if (!user) {
+                    window.location.href = 'index.html'; // Redireciona se não estiver logado
+                    return;
+                }
+
+                const name = user.user_metadata?.full_name || user.email.split('@')[0];
+                document.getElementById('user-greeting').innerText = `Olá, ${name}`;
+
+                document.getElementById('btn-logout').addEventListener('click', () => {
+                    window.netlifyIdentity.logout();
+                });
+
+                fetchOrders(user);
+            };
+
+            // Espera o Identity inicializar caso ainda não tenha
+            if (window.netlifyIdentity) {
+                window.netlifyIdentity.on('init', () => {
+                    checkAuth();
+                });
+                
+                // Se já estiver inicializado, checa agora
+                if(window.netlifyIdentity.currentUser()) {
+                    checkAuth();
+                } else {
+                    // Timeout pequeno para dar tempo do init local
+                    setTimeout(checkAuth, 1000);
+                }
+            }
+
+            async function fetchOrders(user) {
+                const tbody = document.getElementById('orders-body');
+                try {
+                    const token = await user.jwt();
+                    const response = await fetch('/.netlify/functions/get-pedidos', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (!response.ok) throw new Error('Falha ao buscar pedidos');
+                    
+                    const pedidos = await response.json();
+                    
+                    if (pedidos.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #888;">Você ainda não tem nenhum pedido.</td></tr>';
+                        return;
+                    }
+
+                    tbody.innerHTML = '';
+                    pedidos.forEach(pedido => {
+                        const data = new Date(pedido.created_at).toLocaleDateString('pt-BR');
+                        const total = (pedido.total_cents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                        
+                        let statusClass = 'status-pendente';
+                        let statusText = 'Pendente';
+                        if (pedido.status.includes('pago')) {
+                            statusClass = 'status-pago';
+                            statusText = 'Aprovado';
+                        } else if (pedido.status.includes('recusado')) {
+                            statusClass = 'status-recusado';
+                            statusText = 'Recusado';
+                        }
+
+                        // Formatar itens
+                        const itemsList = pedido.items ? pedido.items.map(i => `${i.quantity}x ${i.description || 'Produto'}`).join('<br>') : '-';
+
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td><strong>P-${pedido.id}</strong></td>
+                            <td>${data}</td>
+                            <td>${itemsList}</td>
+                            <td>${total}</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+
+                } catch (error) {
+                    console.error(error);
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #ff4444;">Erro ao carregar pedidos. Tente novamente mais tarde.</td></tr>';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
