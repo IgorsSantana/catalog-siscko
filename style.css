@@ -968,9 +968,12 @@ footer {
 /* Cookie Banner LGPD */
 .cookie-banner {
     position: fixed;
-    bottom: -100px;
+    bottom: 0;
     left: 0;
     width: 100%;
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
     background-color: var(--card-bg);
     color: #ccc;
     padding: 1.5rem 5%;
@@ -980,13 +983,15 @@ footer {
     align-items: center;
     border-top: 1px solid #333;
     z-index: 9999;
-    transition: bottom 0.5s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
     box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
     gap: 1rem;
 }
 
 .cookie-banner.show {
-    bottom: 0;
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
 }
 
 .cookie-text {
