@@ -93,7 +93,7 @@
       ]
     },
     {
-      "is_active": true,
+      "is_active": false,
       "name": "World Cup Tee",
       "price": 159.9,
       "status": "Em Breve",
