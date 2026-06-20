@@ -196,6 +196,10 @@
 
             // Espera o Identity inicializar caso ainda não tenha
             if (window.netlifyIdentity) {
+                window.netlifyIdentity.on('logout', () => {
+                    window.location.href = 'index.html'; // Expulsa o usuário da tela
+                });
+
                 window.netlifyIdentity.on('init', () => {
                     checkAuth();
                 });
