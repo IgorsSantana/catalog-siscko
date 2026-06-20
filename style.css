@@ -811,6 +811,22 @@ footer {
     .mobile-bottom-bar a span.icon {
         font-size: 1.4rem;
         margin-bottom: 2px;
+        position: relative;
+    }
+
+    .cart-badge {
+        position: absolute;
+        top: -6px;
+        right: -10px;
+        background-color: var(--text-color);
+        color: var(--bg-color);
+        font-size: 0.55rem;
+        font-weight: 900;
+        padding: 2px 5px;
+        border-radius: 10px;
+        line-height: 1;
+        min-width: 14px;
+        text-align: center;
     }
 
     .carousel-btn {
