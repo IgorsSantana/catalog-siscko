@@ -10,20 +10,27 @@
     /* Tema Personalizado Siscko para o Painel */
     * {
       font-family: 'Inter', sans-serif !important;
+      -webkit-font-smoothing: antialiased;
     }
     
-    /* Botões principais e Login */
+    /* Botões principais */
     button, .nc-githubAuthenticationPage-button, [class*="Button"] {
       border-radius: 6px !important;
       text-transform: uppercase !important;
       letter-spacing: 0.5px !important;
       font-weight: 600 !important;
+      transition: all 0.2s ease !important;
+    }
+
+    button:hover, [class*="Button"]:hover {
+      transform: translateY(-1px);
     }
 
     /* Topbar - Header do Painel */
     [class*="AppHeader"] {
         background-color: #000 !important;
         border-bottom: 1px solid #222 !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
     }
     
     [class*="AppHeader"] a {
@@ -32,7 +39,7 @@
 
     /* Sidebar do Painel */
     [class*="SidebarContainer"] {
-        background-color: #f4f4f4 !important;
+        background-color: #fafafa !important;
         border-right: 1px solid #e5e5e5 !important;
     }
 
@@ -40,41 +47,91 @@
     [class*="ToolbarContainer"] button:last-child {
         background-color: #000 !important;
         color: #fff !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
     }
 
     /* Labels e Hints (Intuitividade) */
     label, [class*="Label"] {
         font-weight: 700 !important;
         font-size: 13px !important;
-        color: #111 !important;
+        color: #222 !important;
         text-transform: uppercase !important;
         letter-spacing: 0.5px !important;
+        margin-bottom: 6px !important;
+        display: block;
     }
 
     [class*="Hint"] {
         font-size: 13px !important;
-        color: #555 !important;
+        color: #666 !important;
         font-style: italic !important;
-        margin-bottom: 10px !important;
+        margin-bottom: 12px !important;
         display: block !important;
-    }
-
-    /* Cards da Lista e Imagens */
-    [class*="ObjectWidgetTopBar"], [class*="ListItemTopBar"] {
-        background-color: #f8f8f8 !important;
-        border-bottom: 1px solid #ddd !important;
     }
 
     /* Inputs e Selects */
     input, select, textarea, [class*="ControlContainer"] {
         border-radius: 6px !important;
-        border-color: #ccc !important;
+        border: 1px solid #ddd !important;
         box-shadow: none !important;
+        background-color: #fff !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
     }
     
     input:focus, select:focus, textarea:focus {
         border-color: #000 !important;
-        box-shadow: 0 0 0 2px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 0 0 3px rgba(0,0,0,0.05) !important;
+        outline: none !important;
+    }
+
+    /* Melhorias Específicas para Desktop (Mais Profissional) */
+    @media (min-width: 1024px) {
+        /* Fundo do Editor */
+        [class*="EditorContainer"] {
+            background-color: #f3f4f6 !important;
+        }
+
+        /* Card Central do Editor */
+        [class*="EditorControlPane"] {
+            max-width: 900px !important;
+            margin: 40px auto !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08) !important;
+            border-radius: 12px !important;
+            padding: 40px !important;
+            border: 1px solid #eaeaea !important;
+        }
+
+        /* Estilo para os Itens da Lista (Cards de Produtos) */
+        [class*="ObjectWidgetTopBar"], [class*="ListItemTopBar"] {
+            background-color: #f8f9fa !important;
+            border: 1px solid #e5e7eb !important;
+            border-bottom: none !important;
+            border-radius: 8px 8px 0 0 !important;
+            padding: 16px !important;
+            margin-top: 10px !important;
+        }
+
+        /* Corpo do Item da Lista */
+        [class*="ObjectWidgetTopBar"] + div, [class*="ListItemTopBar"] + div {
+            border: 1px solid #e5e7eb !important;
+            border-radius: 0 0 8px 8px !important;
+            padding: 24px !important;
+            margin-bottom: 30px !important;
+            background-color: #fff !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02) !important;
+        }
+
+        /* Image Upload Box Desktop */
+        [class*="ImageWrapper"] {
+            border: 2px dashed #d1d5db !important;
+            border-radius: 8px !important;
+            background-color: #f9fafb !important;
+            transition: border-color 0.2s ease !important;
+        }
+        [class*="ImageWrapper"]:hover {
+            border-color: #000 !important;
+        }
     }
   </style>
 
