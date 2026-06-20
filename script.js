@@ -502,12 +502,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
                 if (data.erro) throw new Error();
                 
-                if (data.uf === 'SP') {
+                if (data.localidade === 'Bicas' || data.localidade === 'Juiz de Fora') {
+                    shippingCost = 10;
+                } else if (data.uf === 'SP') {
                     shippingCost = 15;
                 } else {
                     shippingCost = 30;
                 }
-                shippingResult.innerHTML = `Frete (${data.uf}): <span style="color:#fff;">R$ ${shippingCost.toFixed(2).replace('.',',')}</span>`;
+                const local = data.localidade === 'Bicas' || data.localidade === 'Juiz de Fora' ? data.localidade : data.uf;
+                shippingResult.innerHTML = `Frete (${local}): <span style="color:#fff;">R$ ${shippingCost.toFixed(2).replace('.',',')}</span>`;
                 updateCartUI();
             } catch (err) {
                 shippingResult.innerText = "Erro ao buscar CEP.";
