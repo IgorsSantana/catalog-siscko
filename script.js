@@ -25,9 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (product.is_active === false) return;
 
             const isEmBreve = product.status === "Em Breve";
-            const priceDisplay = isEmBreve ? "EM BREVE" : `R$ ${product.price.toFixed(2).replace('.', ',')}`;
-            const disabledClass = isEmBreve ? "disabled" : "";
-            const disabledAttr = isEmBreve ? "disabled" : "";
+            const isEsgotado = product.status === "Esgotado";
+            const isDisabled = isEmBreve || isEsgotado;
+            
+            let priceDisplay = `R$ ${product.price.toFixed(2).replace('.', ',')}`;
+            if (isEmBreve) priceDisplay = "EM BREVE";
+            if (isEsgotado) priceDisplay = "ESGOTADO";
+            
+            const disabledClass = isDisabled ? "disabled" : "";
+            const disabledAttr = isDisabled ? "disabled" : "";
+            
+            let btnText = "ADD TO CART";
+            if (isEmBreve) btnText = "EM BREVE";
+            if (isEsgotado) btnText = "ESGOTADO";
 
             let imagesHTML = "";
             let dotsHTML = "";
@@ -78,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="size-btn ${disabledClass}">GG</span>
                             <span class="size-btn ${disabledClass}">XG</span>
                         </div>
-                        <button class="add-cart-btn ${disabledClass}" ${disabledAttr}>${isEmBreve ? "EM BREVE" : "ADD TO CART"}</button>
+                        <button class="add-cart-btn ${disabledClass}" ${disabledAttr}>${btnText}</button>
                     </div>
                 </div>
             `;

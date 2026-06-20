@@ -50,9 +50,9 @@ collections:
               - label: "4. Disponibilidade"
                 name: "status"
                 widget: "select"
-                options: ["Disponível", "Em Breve"]
+                options: ["Disponível", "Em Breve", "Esgotado"]
                 default: "Disponível"
-                hint: "Peças em breve ficarão com botão desativado e preço oculto."
+                hint: "Peças em breve ou esgotadas ficarão com o botão desativado."
               - label: "5. Sessão do Site"
                 name: "category"
                 widget: "select"
