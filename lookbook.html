@@ -24,6 +24,7 @@
             <li><a href="todos.html">Todos</a></li>
             <li><a href="lookbook.html" class="active">Lookbook</a></li>
             <li><a href="index.html#medidas">Medidas</a></li>
+            <li><a href="#" id="login-link">Minha Conta</a></li>
             <li><a href="#about">About</a></li>
         </ul>
         <div class="nav-actions">
@@ -111,16 +112,7 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
-                }
-            });
-        }
+
     <!-- Cookie Banner LGPD -->
     <div id="cookie-banner" class="cookie-banner">
         <div class="cookie-text">

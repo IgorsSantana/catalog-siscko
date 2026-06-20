@@ -14,6 +14,37 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
+    // --- Netlify Identity Logic ---
+    const loginLink = document.getElementById('login-link');
+    
+    function updateLoginState(user) {
+        if (loginLink) {
+            if (user) {
+                const name = user.user_metadata?.full_name || user.email.split('@')[0];
+                loginLink.innerText = `Olá, ${name} (Sair)`;
+                loginLink.onclick = (e) => {
+                    e.preventDefault();
+                    if(window.netlifyIdentity) window.netlifyIdentity.logout();
+                };
+            } else {
+                loginLink.innerText = "Minha Conta / Login";
+                loginLink.onclick = (e) => {
+                    e.preventDefault();
+                    if(window.netlifyIdentity) window.netlifyIdentity.open('login');
+                };
+            }
+        }
+    }
+
+    if (window.netlifyIdentity) {
+        window.netlifyIdentity.on('init', user => updateLoginState(user));
+        window.netlifyIdentity.on('login', user => {
+            updateLoginState(user);
+            window.netlifyIdentity.close();
+        });
+        window.netlifyIdentity.on('logout', () => updateLoginState(null));
+    }
+
     // --- Fetch and Render Products ---
     fetch('data/products.json')
         .then(res => {
@@ -453,9 +484,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 items: items
             };
 
+            const user = window.netlifyIdentity ? window.netlifyIdentity.currentUser() : null;
+            const headers = { 'Content-Type': 'application/json' };
+            if (user) {
+                // Enviar o JWT Token para a API Netlify
+                await user.jwt().then(token => {
+                    headers['Authorization'] = `Bearer ${token}`;
+                });
+            }
+
             const response = await fetch('/.netlify/functions/checkout', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: headers,
                 body: JSON.stringify(payload)
             });
 
