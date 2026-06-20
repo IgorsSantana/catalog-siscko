@@ -285,12 +285,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Cart & Modal Variables ---
     let cart = JSON.parse(localStorage.getItem('siscko_cart')) || [];
-    const cartIcon = document.getElementById('cart-icon');
+    const cartIcons = document.querySelectorAll('#cart-icon, .cart-icon-trigger');
     const cartSidebar = document.getElementById('cart-sidebar');
     const closeCartBtn = document.getElementById('close-cart');
     const cartOverlay = document.getElementById('cart-overlay');
     const cartItemsContainer = document.getElementById('cart-items');
-    const cartCountEl = document.getElementById('cart-count');
+    const cartCountEls = document.querySelectorAll('#cart-count, .cart-count-display');
     const cartTotalPriceEl = document.getElementById('cart-total-price');
     const checkoutBtn = document.getElementById('checkout-btn');
     
@@ -422,9 +422,11 @@ document.addEventListener('DOMContentLoaded', () => {
         cartOverlay.classList.remove('open');
     };
 
-    cartIcon.addEventListener('click', (e) => {
-        e.preventDefault();
-        openCart();
+    cartIcons.forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            e.preventDefault();
+            openCart();
+        });
     });
 
     closeCartBtn.addEventListener('click', closeCart);
@@ -455,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        cartCountEl.innerText = totalCount;
+        cartCountEls.forEach(el => el.innerText = totalCount);
         cartTotalPriceEl.innerText = `R$ ${(totalPrice + shippingCost).toFixed(2).replace('.', ',')}`;
 
         localStorage.setItem('siscko_cart', JSON.stringify(cart));

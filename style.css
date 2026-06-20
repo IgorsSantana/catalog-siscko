@@ -759,38 +759,84 @@ footer {
         padding: 3rem 5%;
     }
 
-    .hamburger {
-        display: block;
+    /* Ocultar topo antigo no mobile */
+    .nav-actions { display: none !important; }
+    .hamburger { display: none !important; }
+    .nav-links { display: none !important; }
+    
+    .navbar {
+        justify-content: center;
+        padding: 1rem;
     }
 
-    .nav-links {
-        position: absolute;
-        top: 100%;
+    /* Mobile Bottom Bar (App-like) */
+    .mobile-bottom-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
         left: 0;
         width: 100%;
-        background: rgba(5, 5, 5, 0.98);
+        height: 70px;
+        background: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
+        justify-content: space-around;
+        align-items: center;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    .mobile-bottom-bar a {
+        display: flex;
         flex-direction: column;
-        padding: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s ease;
-        text-align: center;
-        gap: 0;
+        align-items: center;
+        justify-content: center;
+        color: #888;
+        text-decoration: none;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        flex: 1;
+        height: 100%;
+        transition: color 0.3s;
+    }
+    
+    .mobile-bottom-bar a:active,
+    .mobile-bottom-bar a:focus {
+        color: #fff;
     }
 
-    .nav-links.active {
-        max-height: 400px;
-        padding: 1rem 0;
-    }
-
-    .nav-links li {
-        margin: 1.5rem 0;
+    .mobile-bottom-bar a span.icon {
+        font-size: 1.4rem;
+        margin-bottom: 2px;
     }
 
     .carousel-btn {
         opacity: 1;
-        /* Always show buttons on mobile for discoverability */
         background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Touch Targets e Full Screen Cart */
+    .size-btn {
+        min-height: 48px;
+        min-width: 48px;
+    }
+    
+    .add-cart-btn {
+        min-height: 48px;
+        font-size: 1rem;
+    }
+
+    .cart-sidebar {
+        width: 100%;
+        max-width: 100%;
+        right: -100%;
+    }
+    
+    body {
+        padding-bottom: 70px; /* Compensar o menu inferior */
     }
 }
 
