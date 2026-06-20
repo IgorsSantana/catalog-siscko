@@ -37,6 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (window.netlifyIdentity) {
+        // Inicializa o widget (necessário quando não usamos os atributos data- html)
+        window.netlifyIdentity.init();
+        
+        // Define o estado atual imediatamente
+        updateLoginState(window.netlifyIdentity.currentUser());
+
         window.netlifyIdentity.on('init', user => updateLoginState(user));
         window.netlifyIdentity.on('login', user => {
             updateLoginState(user);
