@@ -15,24 +15,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Netlify Identity Logic ---
-    const loginLink = document.getElementById('login-link');
+    const loginLinks = document.querySelectorAll('#login-link, .login-action-mobile');
     
     function updateLoginState(user) {
-        if (loginLink) {
+        loginLinks.forEach(link => {
             if (user) {
-                loginLink.innerText = `Minha Conta`;
-                loginLink.onclick = (e) => {
+                // Se for mobile e o texto original era só 'Conta', mantém curto. Se for desktop, 'Minha Conta'.
+                link.innerText = link.classList.contains('mobile-only') ? 'Conta' : 'Minha Conta';
+                link.onclick = (e) => {
                     e.preventDefault();
                     window.location.href = 'conta.html';
                 };
             } else {
-                loginLink.innerText = "Entrar / Cadastrar";
-                loginLink.onclick = (e) => {
+                link.innerText = link.classList.contains('mobile-only') ? 'Entrar' : 'Entrar / Cadastrar';
+                link.onclick = (e) => {
                     e.preventDefault();
                     if(window.netlifyIdentity) window.netlifyIdentity.open('login');
                 };
             }
-        }
+        });
     }
 
     if (window.netlifyIdentity) {
@@ -283,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Cart & Modal Variables ---
-    let cart = [];
+    let cart = JSON.parse(localStorage.getItem('siscko_cart')) || [];
     const cartIcon = document.getElementById('cart-icon');
     const cartSidebar = document.getElementById('cart-sidebar');
     const closeCartBtn = document.getElementById('close-cart');
@@ -456,6 +457,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cartCountEl.innerText = totalCount;
         cartTotalPriceEl.innerText = `R$ ${(totalPrice + shippingCost).toFixed(2).replace('.', ',')}`;
+
+        localStorage.setItem('siscko_cart', JSON.stringify(cart));
 
         document.querySelectorAll('.remove-item').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -655,4 +658,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Iniciar UI do Carrinho do LocalStorage ---
+    updateCartUI();
 });
