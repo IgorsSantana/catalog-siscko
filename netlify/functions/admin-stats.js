@@ -54,12 +54,21 @@ exports.handler = async (event, context) => {
             }
         });
 
-        if (!resPedidos.ok || !resCarrinhos.ok) {
-            throw new Error(`Erro Supabase: ${resPedidos.status} / ${resCarrinhos.status}`);
+        let pedidos = [];
+        let carrinhos = [];
+
+        if (resPedidos.ok) {
+            pedidos = await resPedidos.json();
+        } else if (resPedidos.status !== 404 && resPedidos.status !== 400) {
+            // Ignora 404 ou 400 que pode ocorrer se a tabela não existir ainda no banco
+            throw new Error(`Erro Pedidos: ${resPedidos.status} ${await resPedidos.text()}`);
         }
 
-        const pedidos = await resPedidos.json();
-        const carrinhos = await resCarrinhos.json();
+        if (resCarrinhos.ok) {
+            carrinhos = await resCarrinhos.json();
+        } else if (resCarrinhos.status !== 404 && resCarrinhos.status !== 400) {
+            throw new Error(`Erro Carrinhos: ${resCarrinhos.status} ${await resCarrinhos.text()}`);
+        }
 
         return {
             statusCode: 200,
