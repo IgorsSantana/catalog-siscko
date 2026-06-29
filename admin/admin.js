@@ -100,7 +100,18 @@ async function loadData() {
         
         state.products = prodData.products || [];
         state.lookbook = lookData.lookbook || [];
-        state.settings = setData || { desktop_banners: [], mobile_banner: "" };
+        
+        // Defaults if missing
+        state.settings = setData || {};
+        state.settings.desktop_banners = state.settings.desktop_banners || [];
+        state.settings.hero = state.settings.hero || { title: "NOVO DROP", subtitle: "Minimalist streetwear for the bold.", btnText: "VIEW CATALOG", btnLink: "#club-01" };
+        state.settings.sections = state.settings.sections || [
+            { title: "CLUB-01", subtitle: "Disponível agora." },
+            { title: "EM BREVE", subtitle: "Os próximos lançamentos da Siscko." }
+        ];
+        state.settings.footerText = state.settings.footerText || "Streetwear culture redefined. Designed for the streets.";
+        state.settings.social = state.settings.social || { instagram: "https://instagram.com/sisckobr", whatsapp: "https://wa.me/5532999782790" };
+        state.settings.specs = state.settings.specs || { comp: "100% Algodão", malha: "Fio 30.1 Premium", gramatura: "230g/m²", fit: "Mangas normalmente abaixo do cotovelo" };
         
         renderProducts();
         renderLookbook();
@@ -468,7 +479,56 @@ function renderSettings() {
         input.click();
     };
     el.settingsMobileBanner.appendChild(mobileDiv);
+
+    // Populate Texts
+    document.getElementById('set-hero-title').value = state.settings.hero.title || "";
+    document.getElementById('set-hero-subtitle').value = state.settings.hero.subtitle || "";
+    document.getElementById('set-hero-btn-text').value = state.settings.hero.btnText || "";
+    document.getElementById('set-hero-btn-link').value = state.settings.hero.btnLink || "";
+    
+    document.getElementById('set-section1-title').value = state.settings.sections[0]?.title || "";
+    document.getElementById('set-section1-subtitle').value = state.settings.sections[0]?.subtitle || "";
+    document.getElementById('set-section2-title').value = state.settings.sections[1]?.title || "";
+    document.getElementById('set-section2-subtitle').value = state.settings.sections[1]?.subtitle || "";
+    
+    document.getElementById('set-footer-text').value = state.settings.footerText || "";
+    document.getElementById('set-social-ig').value = state.settings.social.instagram || "";
+    document.getElementById('set-social-wa').value = state.settings.social.whatsapp || "";
+    
+    document.getElementById('set-specs-comp').value = state.settings.specs.comp || "";
+    document.getElementById('set-specs-malha').value = state.settings.specs.malha || "";
+    document.getElementById('set-specs-grama').value = state.settings.specs.gramatura || "";
+    document.getElementById('set-specs-fit').value = state.settings.specs.fit || "";
 }
+
+// Bind Settings Inputs
+const settingInputs = [
+    { id: 'set-hero-title', obj: 'hero', key: 'title' },
+    { id: 'set-hero-subtitle', obj: 'hero', key: 'subtitle' },
+    { id: 'set-hero-btn-text', obj: 'hero', key: 'btnText' },
+    { id: 'set-hero-btn-link', obj: 'hero', key: 'btnLink' },
+    { id: 'set-section1-title', obj: 'sections_0', key: 'title' },
+    { id: 'set-section1-subtitle', obj: 'sections_0', key: 'subtitle' },
+    { id: 'set-section2-title', obj: 'sections_1', key: 'title' },
+    { id: 'set-section2-subtitle', obj: 'sections_1', key: 'subtitle' },
+    { id: 'set-footer-text', obj: null, key: 'footerText' },
+    { id: 'set-social-ig', obj: 'social', key: 'instagram' },
+    { id: 'set-social-wa', obj: 'social', key: 'whatsapp' },
+    { id: 'set-specs-comp', obj: 'specs', key: 'comp' },
+    { id: 'set-specs-malha', obj: 'specs', key: 'malha' },
+    { id: 'set-specs-grama', obj: 'specs', key: 'gramatura' },
+    { id: 'set-specs-fit', obj: 'specs', key: 'fit' }
+];
+
+settingInputs.forEach(cfg => {
+    document.getElementById(cfg.id).addEventListener('input', (e) => {
+        if (cfg.obj === 'sections_0') state.settings.sections[0][cfg.key] = e.target.value;
+        else if (cfg.obj === 'sections_1') state.settings.sections[1][cfg.key] = e.target.value;
+        else if (cfg.obj) state.settings[cfg.obj][cfg.key] = e.target.value;
+        else state.settings[cfg.key] = e.target.value;
+        markUnsaved();
+    });
+});
 
 window.removeBanner = (i) => {
     state.settings.desktop_banners.splice(i, 1);

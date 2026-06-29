@@ -169,6 +169,55 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             if (data) {
+                // Texts - Hero
+                if (data.hero) {
+                    const heroTitle = document.getElementById('dyn-hero-title');
+                    if (heroTitle) heroTitle.innerText = data.hero.title || "NOVO DROP";
+                    const heroSub = document.getElementById('dyn-hero-subtitle');
+                    if (heroSub) heroSub.innerText = data.hero.subtitle || "Minimalist streetwear for the bold.";
+                    const heroBtn = document.getElementById('dyn-hero-btn');
+                    if (heroBtn) {
+                        heroBtn.innerText = data.hero.btnText || "VIEW CATALOG";
+                        heroBtn.href = data.hero.btnLink || "#club-01";
+                    }
+                }
+                
+                // Texts - Sections
+                if (data.sections && data.sections.length >= 2) {
+                    const s1Title = document.getElementById('dyn-section1-title');
+                    if (s1Title) s1Title.innerText = data.sections[0].title || "CLUB-01";
+                    const s1Sub = document.getElementById('dyn-section1-subtitle');
+                    if (s1Sub) s1Sub.innerText = data.sections[0].subtitle || "Disponível agora.";
+                    
+                    const s2Title = document.getElementById('dyn-section2-title');
+                    if (s2Title) s2Title.innerText = data.sections[1].title || "EM BREVE";
+                    const s2Sub = document.getElementById('dyn-section2-subtitle');
+                    if (s2Sub) s2Sub.innerText = data.sections[1].subtitle || "Os próximos lançamentos da Siscko.";
+                }
+                
+                // Texts - Global (Footer & Social)
+                const footerText = document.getElementById('dyn-footer-text');
+                if (footerText && data.footerText) footerText.innerText = data.footerText;
+                
+                if (data.social) {
+                    const ig = document.getElementById('dyn-social-ig');
+                    if (ig && data.social.instagram) ig.href = data.social.instagram;
+                    const wa = document.getElementById('dyn-social-wa');
+                    if (wa && data.social.whatsapp) wa.href = data.social.whatsapp;
+                }
+                
+                // Texts - Specs
+                if (data.specs) {
+                    const sComp = document.getElementById('dyn-specs-comp');
+                    if (sComp && data.specs.comp) sComp.innerText = data.specs.comp;
+                    const sMalha = document.getElementById('dyn-specs-malha');
+                    if (sMalha && data.specs.malha) sMalha.innerText = data.specs.malha;
+                    const sGrama = document.getElementById('dyn-specs-grama');
+                    if (sGrama && data.specs.grama) sGrama.innerText = data.specs.grama;
+                    const sFit = document.getElementById('dyn-specs-fit');
+                    if (sFit && data.specs.fit) sFit.innerText = data.specs.fit;
+                }
+
                 // Desktop Banners
                 if (data.desktop_banners && data.desktop_banners.length > 0) {
                     const heroTrack = document.querySelector('.hero-carousel-track');

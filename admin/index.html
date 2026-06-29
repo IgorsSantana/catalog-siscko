@@ -158,18 +158,115 @@
 
                 <!-- Settings Tab -->
                 <div id="tab-settings" class="tab-content">
-                    <div class="form-group">
-                        <label>Banners Desktop (Carrossel)</label>
-                        <div id="settings-desktop-banners" class="gallery-grid">
-                            <!-- Desktop banners injected here -->
-                        </div>
-                        <button id="btn-add-desktop-banner" class="btn-secondary mt-2">+ Adicionar Banner Desktop</button>
+                    <div class="list-header">
+                        <h2>Configurações do Site</h2>
                     </div>
-                    
-                    <div class="form-group mt-4">
-                        <label>Banner Mobile (Apenas 1)</label>
-                        <div id="settings-mobile-banner" class="single-image-upload">
-                            <!-- Mobile banner injected here -->
+
+                    <div class="settings-section">
+                        <h3>1. Textos Principais (Hero)</h3>
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label>Título Principal</label>
+                                <input type="text" id="set-hero-title" placeholder="Ex: NOVO DROP">
+                            </div>
+                            <div class="form-group">
+                                <label>Subtítulo Principal</label>
+                                <input type="text" id="set-hero-subtitle" placeholder="Ex: Minimalist streetwear for the bold.">
+                            </div>
+                        </div>
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label>Texto do Botão Principal</label>
+                                <input type="text" id="set-hero-btn-text" placeholder="Ex: VIEW CATALOG">
+                            </div>
+                            <div class="form-group">
+                                <label>Link do Botão Principal</label>
+                                <input type="text" id="set-hero-btn-link" placeholder="Ex: #club-01">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section mt-4">
+                        <h3>2. Banners da Página Inicial</h3>
+                        <div class="form-group mt-2">
+                            <label>Banners Desktop (Carrossel)</label>
+                            <div id="settings-desktop-banners" class="gallery-grid">
+                                <!-- Desktop banners injected here -->
+                            </div>
+                            <button id="btn-add-desktop-banner" class="btn-secondary btn-sm mt-2">+ Adicionar Banner Desktop</button>
+                        </div>
+                        
+                        <div class="form-group mt-4">
+                            <label>Banner Mobile (Apenas 1)</label>
+                            <div id="settings-mobile-banner" class="single-image-upload">
+                                <!-- Mobile banner injected here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section mt-4">
+                        <h3>3. Títulos das Seções (Home)</h3>
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label>Seção 1 - Título</label>
+                                <input type="text" id="set-section1-title" placeholder="Ex: CLUB-01">
+                            </div>
+                            <div class="form-group">
+                                <label>Seção 1 - Subtítulo</label>
+                                <input type="text" id="set-section1-subtitle" placeholder="Ex: Disponível agora.">
+                            </div>
+                        </div>
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label>Seção 2 - Título</label>
+                                <input type="text" id="set-section2-title" placeholder="Ex: EM BREVE">
+                            </div>
+                            <div class="form-group">
+                                <label>Seção 2 - Subtítulo</label>
+                                <input type="text" id="set-section2-subtitle" placeholder="Ex: Os próximos lançamentos.">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section mt-4">
+                        <h3>4. Rodapé e Redes Sociais</h3>
+                        <div class="form-group mt-2">
+                            <label>Texto do Rodapé</label>
+                            <input type="text" id="set-footer-text" placeholder="Ex: Streetwear culture redefined...">
+                        </div>
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label>Link do Instagram</label>
+                                <input type="text" id="set-social-ig" placeholder="Ex: https://instagram.com/sisckobr">
+                            </div>
+                            <div class="form-group">
+                                <label>WhatsApp (Link/Número)</label>
+                                <input type="text" id="set-social-wa" placeholder="Ex: https://wa.me/5532999782790">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section mt-4">
+                        <h3>5. Detalhes de Especificações (Medidas)</h3>
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label>Composição</label>
+                                <input type="text" id="set-specs-comp" placeholder="Ex: 100% Algodão">
+                            </div>
+                            <div class="form-group">
+                                <label>Malha</label>
+                                <input type="text" id="set-specs-malha" placeholder="Ex: Fio 30.1 Premium">
+                            </div>
+                        </div>
+                        <div class="form-row two-cols">
+                            <div class="form-group">
+                                <label>Gramatura</label>
+                                <input type="text" id="set-specs-grama" placeholder="Ex: 230g/m²">
+                            </div>
+                            <div class="form-group">
+                                <label>Fit</label>
+                                <input type="text" id="set-specs-fit" placeholder="Ex: Mangas normalmente abaixo do cotovelo">
+                            </div>
                         </div>
                     </div>
                 </div>
