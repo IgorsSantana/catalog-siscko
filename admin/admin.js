@@ -124,14 +124,59 @@ function markSaved() {
     el.saveStatus.style.color = "var(--text-muted)";
 }
 
+// --- Drag & Drop Reordering Logic ---
+let draggedIndex = null;
+let draggedType = null;
+
+function handleDragStart(e, index, type) {
+    draggedIndex = index;
+    draggedType = type;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => { e.target.style.opacity = '0.5'; }, 0);
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+}
+
+function handleDrop(e, targetIndex, type) {
+    e.preventDefault();
+    const targetEl = e.target.closest('[draggable="true"]');
+    if(targetEl) targetEl.style.opacity = '1';
+    
+    if (draggedIndex === null || draggedType !== type || draggedIndex === targetIndex) return;
+
+    let array;
+    if (type === 'product') array = state.products;
+    else if (type === 'lookbook') array = state.lookbook;
+    else if (type === 'extra') array = currentExtraImages;
+
+    const [removed] = array.splice(draggedIndex, 1);
+    array.splice(targetIndex, 0, removed);
+
+    if (type === 'product') renderProducts();
+    else if (type === 'lookbook') renderLookbook();
+    else if (type === 'extra') renderExtraImages();
+    
+    markUnsaved();
+}
+
+function handleDragEnd(e) {
+    e.target.style.opacity = '1';
+    draggedIndex = null;
+    draggedType = null;
+}
+
 // Render Products
 function renderProducts() {
     el.productsList.innerHTML = '';
     state.products.forEach((prod, index) => {
         const card = document.createElement('div');
         card.className = 'product-card';
+        card.draggable = true;
         card.innerHTML = `
-            <img class="product-image" src="/${prod.main_image || ''}" onerror="this.src=''" alt="${prod.name}">
+            <img class="product-image" src="/${prod.main_image || ''}" onerror="this.src=''" alt="${prod.name}" draggable="false">
             <div class="product-info">
                 <div class="product-meta">
                     <span class="badge ${prod.is_active ? 'active' : 'inactive'}">${prod.is_active ? 'Visível' : 'Oculto'}</span>
@@ -141,7 +186,13 @@ function renderProducts() {
                 <p style="font-size:13px; color:var(--text-muted)">${prod.status} • ${prod.category}</p>
             </div>
         `;
+        
+        card.addEventListener('dragstart', (e) => handleDragStart(e, index, 'product'));
+        card.addEventListener('dragover', handleDragOver);
+        card.addEventListener('drop', (e) => handleDrop(e, index, 'product'));
+        card.addEventListener('dragend', handleDragEnd);
         card.addEventListener('click', () => openProductModal(index));
+        
         el.productsList.appendChild(card);
     });
 }
@@ -246,11 +297,18 @@ function renderExtraImages() {
     currentExtraImages.forEach((img, i) => {
         const div = document.createElement('div');
         div.className = 'image-upload';
+        div.draggable = true;
         const src = img.isNew ? img.dataUrl : '/' + img;
         div.innerHTML = `
-            <img src="${src}">
+            <img src="${src}" draggable="false">
             <button type="button" class="btn-remove-mini" onclick="removeExtraImage(${i})">X</button>
         `;
+        
+        div.addEventListener('dragstart', (e) => handleDragStart(e, i, 'extra'));
+        div.addEventListener('dragover', handleDragOver);
+        div.addEventListener('drop', (e) => handleDrop(e, i, 'extra'));
+        div.addEventListener('dragend', handleDragEnd);
+        
         container.appendChild(div);
     });
 }
@@ -316,13 +374,20 @@ function renderLookbook() {
     state.lookbook.forEach((img, i) => {
         const div = document.createElement('div');
         div.className = 'gallery-item';
+        div.draggable = true;
         const src = img.isNew ? img.dataUrl : '/' + img;
         div.innerHTML = `
-            <img src="${src}">
+            <img src="${src}" draggable="false">
             <button type="button" class="btn-remove" onclick="removeLookbook(${i})">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
         `;
+        
+        div.addEventListener('dragstart', (e) => handleDragStart(e, i, 'lookbook'));
+        div.addEventListener('dragover', handleDragOver);
+        div.addEventListener('drop', (e) => handleDrop(e, i, 'lookbook'));
+        div.addEventListener('dragend', handleDragEnd);
+        
         el.lookbookList.appendChild(div);
     });
 }
