@@ -76,7 +76,7 @@ el.navItems.forEach(item => {
         item.classList.add('active');
         document.getElementById(`tab-${item.dataset.tab}`).classList.add('active');
         
-        const titles = { products: 'Catálogo de Produtos', lookbook: 'Galeria do Lookbook', settings: 'Configurações do Site', crm: 'Gestão de Pedidos e CRM' };
+        const titles = { products: 'Catálogo de Produtos', lookbook: 'Galeria do Lookbook', settings: 'Configurações do Site', crm: 'Gestão de Pedidos e CRM', users: 'Gestão de Equipe e Clientes' };
         document.getElementById('page-title').textContent = titles[item.dataset.tab];
         
         if(item.dataset.tab === 'crm') {
@@ -703,4 +703,115 @@ function renderCrmData(data) {
             cartsBody.appendChild(tr);
         });
     }
+}
+
+// ==========================================
+// USER MANAGEMENT LOGIC
+// ==========================================
+document.getElementById('btn-refresh-users').addEventListener('click', loadUsers);
+
+async function loadUsers() {
+    const errorEl = document.getElementById('users-error');
+    errorEl.style.display = 'none';
+    
+    const user = window.netlifyIdentity.currentUser();
+    if (!user) return;
+    
+    try {
+        const token = await user.jwt();
+        const res = await fetch('/.netlify/functions/admin-users', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        const data = await res.json();
+        
+        if (!res.ok) {
+            throw new Error(data.error || 'Erro ao carregar usuários');
+        }
+        
+        renderUsers(data.users);
+    } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.style.display = 'block';
+    }
+}
+
+function renderUsers(users) {
+    const tbody = document.getElementById('users-table-body');
+    tbody.innerHTML = '';
+    
+    if (!users || users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Nenhum usuário encontrado.</td></tr>';
+        return;
+    }
+    
+    users.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    
+    users.forEach(u => {
+        const tr = document.createElement('tr');
+        const date = new Date(u.created_at).toLocaleDateString('pt-BR');
+        const isAdmin = u.roles && u.roles.includes('admin');
+        
+        const badgeHTML = isAdmin 
+            ? '<span class="badge badge-admin">Admin</span>' 
+            : '<span class="badge badge-user">Cliente</span>';
+            
+        const actionBtnHTML = isAdmin
+            ? `<button class="btn-toggle-role remove" onclick="toggleAdminRole('${u.id}', false)">Remover Admin</button>`
+            : `<button class="btn-toggle-role add" onclick="toggleAdminRole('${u.id}', true)">Promover a Admin</button>`;
+            
+        tr.innerHTML = `
+            <td>${u.email}</td>
+            <td>${date}</td>
+            <td>${badgeHTML}</td>
+            <td>${actionBtnHTML}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+window.toggleAdminRole = async (userId, makeAdmin) => {
+    const user = window.netlifyIdentity.currentUser();
+    if (!user) return;
+    
+    // Confirmação para evitar cliques acidentais
+    if (makeAdmin) {
+        if (!confirm('Tem certeza que deseja dar permissões de Administrador a este usuário? Ele terá controle total do painel.')) return;
+    } else {
+        if (!confirm('Tem certeza que deseja remover o acesso administrativo deste usuário?')) return;
+    }
+    
+    try {
+        const token = await user.jwt();
+        const res = await fetch('/.netlify/functions/admin-users', {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId,
+                roles: makeAdmin ? ['admin'] : []
+            })
+        });
+        
+        const data = await res.json();
+        
+        if (!res.ok) {
+            throw new Error(data.error || 'Erro ao atualizar permissão');
+        }
+        
+        // Recarrega a tabela se sucesso
+        loadUsers();
+    } catch (err) {
+        alert(err.message);
+    }
+};
+
+// Bind Users tab click
+const usersTabBtn = document.querySelector('.nav-item[data-tab="users"]');
+if (usersTabBtn) {
+    usersTabBtn.addEventListener('click', loadUsers);
 }
