@@ -72,7 +72,7 @@
       ]
     },
     {
-      "is_active": true,
+      "is_active": false,
       "name": "MOOSE TEE",
       "price": 119.9,
       "status": "Em Breve",
