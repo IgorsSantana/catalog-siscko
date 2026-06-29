@@ -127,10 +127,12 @@ function markSaved() {
 // --- Drag & Drop Reordering Logic ---
 let draggedIndex = null;
 let draggedType = null;
+let isDragging = false;
 
 function handleDragStart(e, index, type) {
     draggedIndex = index;
     draggedType = type;
+    isDragging = true;
     e.dataTransfer.effectAllowed = 'move';
     setTimeout(() => { e.target.style.opacity = '0.5'; }, 0);
 }
@@ -166,6 +168,7 @@ function handleDragEnd(e) {
     e.target.style.opacity = '1';
     draggedIndex = null;
     draggedType = null;
+    setTimeout(() => { isDragging = false; }, 200);
 }
 
 // Render Products
@@ -191,7 +194,9 @@ function renderProducts() {
         card.addEventListener('dragover', handleDragOver);
         card.addEventListener('drop', (e) => handleDrop(e, index, 'product'));
         card.addEventListener('dragend', handleDragEnd);
-        card.addEventListener('click', () => openProductModal(index));
+        card.addEventListener('click', (e) => {
+            if (!isDragging) openProductModal(index);
+        });
         
         el.productsList.appendChild(card);
     });
