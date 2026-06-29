@@ -76,8 +76,12 @@ el.navItems.forEach(item => {
         item.classList.add('active');
         document.getElementById(`tab-${item.dataset.tab}`).classList.add('active');
         
-        const titles = { products: 'Catálogo de Produtos', lookbook: 'Galeria do Lookbook', settings: 'Configurações do Site' };
+        const titles = { products: 'Catálogo de Produtos', lookbook: 'Galeria do Lookbook', settings: 'Configurações do Site', crm: 'Gestão de Pedidos e CRM' };
         document.getElementById('page-title').textContent = titles[item.dataset.tab];
+        
+        if(item.dataset.tab === 'crm') {
+            loadCrmData();
+        }
     });
 });
 
@@ -532,3 +536,111 @@ el.btnSave.addEventListener('click', async () => {
         el.loadingOverlay.style.display = 'none';
     }
 });
+
+// --- CRM Logic ---
+
+document.getElementById('btn-refresh-crm').addEventListener('click', loadCrmData);
+
+async function loadCrmData() {
+    const errorEl = document.getElementById('crm-error');
+    errorEl.style.display = 'none';
+    
+    if (!window.netlifyIdentity.currentUser()) {
+        errorEl.textContent = "Você precisa estar logado para acessar o CRM.";
+        errorEl.style.display = 'block';
+        return;
+    }
+    
+    try {
+        const token = await window.netlifyIdentity.currentUser().jwt();
+        const res = await fetch('/.netlify/functions/admin-stats', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (res.status === 403) {
+            throw new Error("Acesso Negado: Apenas administradores podem ver o CRM. Por favor, adicione o role 'admin' ao seu usuário no Netlify Identity.");
+        }
+        
+        if (!res.ok) {
+            throw new Error("Erro ao buscar dados do CRM: " + await res.text());
+        }
+        
+        const data = await res.json();
+        renderCrmData(data);
+        
+    } catch (e) {
+        console.error(e);
+        errorEl.textContent = e.message;
+        errorEl.style.display = 'block';
+        
+        document.getElementById('crm-orders-body').innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--danger);">Falha ao carregar</td></tr>';
+        document.getElementById('crm-carts-body').innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--danger);">Falha ao carregar</td></tr>';
+    }
+}
+
+function renderCrmData(data) {
+    const { pedidos = [], carrinhos = [] } = data;
+    
+    // Calculate KPIs
+    let revenue = 0;
+    let paidCount = 0;
+    
+    pedidos.forEach(p => {
+        if (p.status === 'pago') {
+            revenue += (p.total_cents || 0) / 100;
+            paidCount++;
+        }
+    });
+    
+    document.getElementById('kpi-revenue').textContent = 'R$ ' + revenue.toFixed(2).replace('.', ',');
+    document.getElementById('kpi-orders-paid').textContent = paidCount;
+    document.getElementById('kpi-abandoned').textContent = carrinhos.length;
+    
+    // Render Orders
+    const ordersBody = document.getElementById('crm-orders-body');
+    ordersBody.innerHTML = '';
+    
+    if (pedidos.length === 0) {
+        ordersBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Nenhum pedido encontrado.</td></tr>';
+    } else {
+        // Sort newest first
+        pedidos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        
+        pedidos.forEach(p => {
+            const tr = document.createElement('tr');
+            const date = new Date(p.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            const statusClass = p.status === 'pago' ? 'active' : (p.status === 'pendente' ? 'inactive' : '');
+            
+            tr.innerHTML = `
+                <td>#${p.id || '-'}</td>
+                <td>${p.email || 'Anônimo'}</td>
+                <td><span class="badge ${statusClass}">${p.status || 'Desconhecido'}</span></td>
+                <td>R$ ${((p.total_cents || 0) / 100).toFixed(2).replace('.', ',')}</td>
+                <td>${date}</td>
+            `;
+            ordersBody.appendChild(tr);
+        });
+    }
+    
+    // Render Abandoned Carts
+    const cartsBody = document.getElementById('crm-carts-body');
+    cartsBody.innerHTML = '';
+    
+    if (carrinhos.length === 0) {
+        cartsBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">Nenhum carrinho abandonado.</td></tr>';
+    } else {
+        carrinhos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+        
+        carrinhos.forEach(c => {
+            const tr = document.createElement('tr');
+            const date = new Date(c.updated_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            
+            tr.innerHTML = `
+                <td>${c.email || 'Anônimo'}</td>
+                <td>${Array.isArray(c.items) ? c.items.length : 0} item(ns)</td>
+                <td>${date}</td>
+            `;
+            cartsBody.appendChild(tr);
+        });
+    }
+}
