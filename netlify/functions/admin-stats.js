@@ -80,7 +80,7 @@ exports.handler = async (event, context) => {
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: error.message || 'Internal Server Error' })
+            body: JSON.stringify({ error: error ? error.toString() : 'Erro Desconhecido' })
         };
     }
 };
