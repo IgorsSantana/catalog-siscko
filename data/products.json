@@ -111,7 +111,10 @@
       "status": "Em Breve",
       "category": "EM BREVE",
       "main_image": "uploads/1785106296568-from_bicas_back_mockup.png",
-      "hover_image": "uploads/1785106297386-from_bicas_font_mockup.png"
+      "extra_images": [
+        "uploads/1785107019164-from_bicas_font_mockup.png"
+      ],
+      "hover_image": "uploads/1785107018171-from_bicas_back_model.png"
     }
   ]
 }
