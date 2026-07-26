@@ -2,5 +2,32 @@
   "desktop_banners": [
     "uploads/banner-club01.png"
   ],
-  "mobile_banner": "uploads/banner-club01-mobile.png"
+  "mobile_banner": "uploads/banner-club01-mobile.png",
+  "hero": {
+    "title": "NOVO DROP",
+    "subtitle": "Minimalist streetwear for the bold.",
+    "btnText": "VIEW CATALOG",
+    "btnLink": "#club-01"
+  },
+  "sections": [
+    {
+      "title": "CLUB-01",
+      "subtitle": "Disponível agora."
+    },
+    {
+      "title": "EM BREVE",
+      "subtitle": "Os próximos lançamentos da Siscko."
+    }
+  ],
+  "footerText": "Streetwear culture redefined. Designed for the streets.",
+  "social": {
+    "instagram": "https://instagram.com/sisckobr",
+    "whatsapp": "https://wa.me/5532999782790"
+  },
+  "specs": {
+    "comp": "100% Algodão",
+    "malha": "Fio 30.1 Premium",
+    "gramatura": "230g/m²",
+    "fit": "Mangas normalmente abaixo do cotovelo"
+  }
 }

@@ -103,6 +103,15 @@
       "extra_images": [
         "drops/EM BREVE/siscko-world-cup-back-site.jpg"
       ]
+    },
+    {
+      "is_active": true,
+      "name": "Moletom Chumbo",
+      "price": 169.9,
+      "status": "Em Breve",
+      "category": "EM BREVE",
+      "main_image": "uploads/1785106296568-from_bicas_back_mockup.png",
+      "hover_image": "uploads/1785106297386-from_bicas_font_mockup.png"
     }
   ]
 }
